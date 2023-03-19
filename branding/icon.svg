@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="297mm"
+   height="210mm"
+   viewBox="0 0 297 210"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   sodipodi:docname="icon.svg"
+   inkscape:export-filename="/home/x137/fikapay/branding/icon.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     units="mm"
+     showguides="false"
+     inkscape:zoom="1"
+     inkscape:cx="692.5"
+     inkscape:cy="295.5"
+     inkscape:window-width="1366"
+     inkscape:window-height="708"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g60087"
+     inkscape:snap-grids="false">
+    <inkscape:grid
+       type="xygrid"
+       id="grid967" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2">
+    <linearGradient
+       id="linearGradient5640"
+       inkscape:swatch="solid">
+      <stop
+         style="stop-color:#4b0082;stop-opacity:1;"
+         offset="0"
+         id="stop5638" />
+    </linearGradient>
+    <rect
+       x="850.34918"
+       y="281.69122"
+       width="95.637148"
+       height="142.69348"
+       id="rect45152" />
+    <rect
+       x="849.19171"
+       y="274.15599"
+       width="140.74146"
+       height="153.12151"
+       id="rect40077" />
+    <rect
+       x="-500.75317"
+       y="260.05642"
+       width="17.833777"
+       height="105.02689"
+       id="rect363" />
+    <rect
+       x="-675.006"
+       y="121.66634"
+       width="380.89914"
+       height="215.13652"
+       id="rect71506" />
+    <rect
+       x="430.72297"
+       y="501.34867"
+       width="148.05163"
+       height="117.54857"
+       id="rect62982" />
+    <rect
+       x="351.18837"
+       y="524.38007"
+       width="384.49042"
+       height="111.6428"
+       id="rect50767" />
+    <rect
+       x="177.82159"
+       y="233.41071"
+       width="740.6454"
+       height="223.41657"
+       id="rect5705" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       xml:space="preserve"
+       transform="scale(0.26458333)"
+       id="text50765"
+       style="line-height:1.25;font-family:sans-serif;font-size:40px;letter-spacing:0px;white-space:pre;shape-inside:url(#rect50767)" />
+    <text
+       xml:space="preserve"
+       transform="scale(0.26458333)"
+       id="text62980"
+       style="line-height:1.25;font-family:sans-serif;font-size:40px;letter-spacing:0px;white-space:pre;shape-inside:url(#rect62982)" />
+    <text
+       xml:space="preserve"
+       transform="scale(0.26458333)"
+       id="text361"
+       style="line-height:1.25;font-family:sans-serif;font-size:40px;letter-spacing:0px;white-space:pre;shape-inside:url(#rect363)" />
+    <text
+       xml:space="preserve"
+       style="font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;stroke-width:0.264583"
+       x="-137.20947"
+       y="107.22455"
+       id="text501"><tspan
+         sodipodi:role="line"
+         id="tspan499"
+         style="stroke-width:0.264583"
+         x="-137.20947"
+         y="107.22455">`</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="scale(0.26458333)"
+       id="text40075"
+       style="line-height:1.25;font-family:sans-serif;font-size:40px;letter-spacing:0px;white-space:pre;shape-inside:url(#rect40077)" />
+    <g
+       id="g60087"
+       transform="translate(-25.465718,-10.56821)">
+      <ellipse
+         style="fill:#008000;fill-opacity:1;stroke-width:0.159384"
+         id="path454"
+         cx="244.86319"
+         cy="92.741425"
+         rx="22.341"
+         ry="21.319185"
+         inkscape:export-filename="/home/ron/xcodes/diet_track/assets/images/icon.png"
+         inkscape:export-xdpi="96"
+         inkscape:export-ydpi="96" />
+      <text
+         xml:space="preserve"
+         transform="matrix(0.26458333,0,0,0.26458333,9.4683177,-0.86352122)"
+         id="text45150"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:120px;line-height:1.25;font-family:FreeSerif;-inkscape-font-specification:'FreeSerif Bold';letter-spacing:0px;white-space:pre;shape-inside:url(#rect45152);fill:#ffffff"
+         inkscape:export-filename="/home/x137/fikapay/branding/icon.png"
+         inkscape:export-xdpi="96"
+         inkscape:export-ydpi="96"><tspan
+           x="850.34961"
+           y="392.69141"
+           id="tspan68">D</tspan></text>
+    </g>
+  </g>
+</svg>

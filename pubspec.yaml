@@ -1,0 +1,59 @@
+name: diet_track
+publish_to: 'none' 
+version: 0.0.0+1
+
+environment:
+  sdk: '>=2.19.4 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  firebase_core: ^2.7.0
+  get: ^4.6.5
+  cloud_firestore: ^4.4.3
+  firebase_auth: ^4.2.9
+  email_validator: ^2.1.17
+  intl: ^0.17.0
+  dropdown_button2: ^2.0.0
+
+  #flutter pub run flutter_launcher_icons
+  flutter_launcher_icons: ^0.12.0
+  datetime_picker_formfield_new: ^2.1.0
+  select_form_field: ^2.2.0
+  firebase_crashlytics: ^3.0.16
+  flutter_native_splash: ^2.2.19
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+
+  fonts:
+     - family: SF-Pro-Rounded
+       fonts:
+         - asset: assets/fonts/SF-Pro-Rounded-Light.otf
+           weight: 300
+         - asset: assets/fonts/SF-Pro-Rounded-Regular.otf
+           weight: 400
+         - asset: assets/fonts/SF-Pro-Rounded-Medium.otf
+           weight: 500
+         - asset: assets/fonts/SF-Pro-Rounded-Semibold.otf
+           weight: 600
+         - asset: assets/fonts/SF-Pro-Rounded-Bold.otf
+           weight: 700
+
+flutter_icons:
+  image_path_android: "assets/images/icon.png"
+  android: true 
+  min_sdk_android: 21
