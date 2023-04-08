@@ -66,3 +66,8 @@ class AuthService {
     }
   }
 }
+
+Future<bool> isUserLoggedIn() async {
+  final user = FirebaseAuth.instance.currentUser;
+  return user != null;
+}

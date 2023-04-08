@@ -1,13 +1,12 @@
-import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:select_form_field/select_form_field.dart';
 import '../../config/constants.dart';
+import '../../main.dart';
 import '../../models/user_model.dart';
 import '../../services/firebase/auth_service.dart';
-import '../../config/validator.dart';
+import '../../services/hive/write_hive.dart';
+import '../../utils/validator.dart';
 import '../landing_page.dart';
 import '../widgets/primary_button.dart';
 import 'login.dart';
@@ -23,28 +22,12 @@ class SignUpState extends State<SignUp> {
   final TextEditingController _givenNameController = TextEditingController();
   final TextEditingController _otherNamesController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _birthDateController = TextEditingController();
-  final TextEditingController _genderController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPassword = TextEditingController();
 
   bool isTermsAgreed = false;
   var rememberValue = false;
-  final dateFormat = DateFormat("dd-MM-yyyy");
   final _formKey = GlobalKey<FormState>();
-
-  final List<Map<String, dynamic>> _genderOptions = [
-    {
-      'value': 'male',
-      'label': 'Male',
-      'textStyle': const TextStyle(color: Colors.black),
-    },
-    {
-      'value': 'female',
-      'label': 'Female',
-      'textStyle': const TextStyle(color: Colors.black),
-    },
-  ];
 
   //password field obscureText  handler
   bool _isHidden = true;
@@ -225,91 +208,6 @@ class SignUpState extends State<SignUp> {
                     ),
                     const SizedBox(height: kDefaultPadding),
                     const Text(
-                      'Date of Birth *',
-                      style: TextStyle(
-                          color: kSignUpFormHintTextColor,
-                          fontSize: 17.0,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    DateTimeField(
-                      controller: _birthDateController,
-                      format: dateFormat,
-                      onShowPicker: (context, currentValue) {
-                        return showDatePicker(
-                            context: context,
-                            firstDate: DateTime(1950),
-                            initialDate: currentValue ?? DateTime.now(),
-                            lastDate: DateTime(2100));
-                      },
-                      style: const TextStyle(color: kSignUpFormHintTextColor),
-                      resetIcon: const Icon(
-                        Icons.close,
-                        color: kSignUpFormHintTextColor,
-                      ),
-                      decoration: InputDecoration(
-                        labelText: 'DD/MM/YYYY',
-                        hintStyle: const TextStyle(color: Colors.black),
-                        labelStyle:
-                            const TextStyle(color: kSignUpFormHintTextColor),
-                        prefixIcon: const Icon(Icons.date_range,
-                            color: kSignUpFormIconsColor),
-                        contentPadding:
-                            const EdgeInsets.all(kSignUpFormContentPadding),
-                        fillColor: kSignUpFormFillColor,
-                        filled: true,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: kPrimaryColor),
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: kDefaultPadding),
-                    const Text(
-                      'Gender *',
-                      style: TextStyle(
-                          color: kSignUpFormHintTextColor,
-                          fontSize: 17.0,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    SelectFormField(
-                      controller: _genderController,
-                      style: const TextStyle(color: kSignUpFormHintTextColor),
-                      type: SelectFormFieldType.dropdown,
-                      items: _genderOptions,
-                      dialogTitle: 'Select',
-                      //onChanged: (val) => print(val),
-                      //onSaved: (val) => print(val),
-                      decoration: InputDecoration(
-                        labelText: 'Select',
-                        hintStyle: const TextStyle(color: Colors.black),
-                        labelStyle:
-                            const TextStyle(color: kSignUpFormHintTextColor),
-                        prefixIcon: const Icon(Icons.person_3,
-                            color: kSignUpFormIconsColor),
-                        contentPadding:
-                            const EdgeInsets.all(kSignUpFormContentPadding),
-                        fillColor: kSignUpFormFillColor,
-                        filled: true,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: kPrimaryColor),
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: kDefaultPadding),
-                    const Text(
                       'Password *',
                       style: TextStyle(
                           color: kSignUpFormHintTextColor,
@@ -431,15 +329,17 @@ class SignUpState extends State<SignUp> {
 
                                 final User? currentUser = auth.currentUser;
                                 final uid = currentUser?.uid;
-                                UserModel newUser = UserModel();
-                                newUser.addUserData(
-                                  uid,
-                                  _givenNameController.text.trim(),
-                                  _otherNamesController.text.trim(),
-                                  _emailController.text.trim(),
-                                  _birthDateController.text.trim(),
-                                  _genderController.text.trim(),
+                                UserModel newUser = UserModel(
+                                  userID: uid!,
+                                  givenName: _givenNameController.text.trim(),
+                                  otherNames: _otherNamesController.text.trim(),
+                                  email: _emailController.text.trim(),
                                 );
+
+                                newUser.addUserData(newUser);
+                                await saveUserModelToHive(currUserID);
+                                await saveFoodScanResultsToHive(currUserID);
+
                                 if (!mounted) return;
                                 Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(

@@ -1,30 +1,14 @@
-class ResultModel {
-  String dateChecked, foodPicURL;
-  ResultModel({
-    required this.dateChecked,
-    required this.foodPicURL,
-  });
-}
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-List<ResultModel> results = [
+class ResultModel {
+  String resultID, userID, foodPicURL;
+  Timestamp timestamp;
+  final List<String>? identifiedFoodIDs;
+
   ResultModel(
-    dateChecked: '08/01/2023',
-    foodPicURL: 'assets/images/result_5.jpg',
-  ),
-  ResultModel(
-    dateChecked: '10/01/2023',
-    foodPicURL: 'assets/images/result_2.jpg',
-  ),
-  ResultModel(
-    dateChecked: '13/01/2023',
-    foodPicURL: 'assets/images/result_3.jpg',
-  ),
-  ResultModel(
-    dateChecked: '15/01/2023',
-    foodPicURL: 'assets/images/result_4.jpg',
-  ),
-  ResultModel(
-    dateChecked: '17/01/2023',
-    foodPicURL: 'assets/images/result_1.jpg',
-  )
-];
+      {required this.resultID,
+      required this.userID,
+      required this.foodPicURL,
+      required this.timestamp,
+      this.identifiedFoodIDs});
+}

@@ -1,6 +1,8 @@
+import 'package:diet_track/main.dart';
 import 'package:flutter/material.dart';
 import '../../config/constants.dart';
 import '../../services/firebase/auth_service.dart';
+import '../../services/hive/write_hive.dart';
 import '../landing_page.dart';
 import '../splash_screen.dart';
 import '../widgets/primary_button.dart';
@@ -186,6 +188,8 @@ class LoginScreenState extends State<LoginScreen> {
                                     password: _passwordController.text.trim(),
                                   );
                                   if (message!.contains('Success')) {
+                                    await saveUserModelToHive(currUserID);
+                                    await saveFoodScanResultsToHive(currUserID);
                                     if (!mounted) return;
                                     Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(

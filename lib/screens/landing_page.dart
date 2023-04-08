@@ -26,7 +26,7 @@ class _LandingPageState extends State<LandingPage> {
   void initState() {
     super.initState();
     page1 = const HomeScreen();
-    page2 = const RecentResultsScreen();
+    page2 = const ResultsScreen();
     page3 = const UserAccountPage();
     pages = [page1, page2, page3];
     currentIndex = 0;

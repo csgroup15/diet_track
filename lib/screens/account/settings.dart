@@ -1,7 +1,10 @@
 import 'package:diet_track/screens/account/login.dart';
+import 'package:diet_track/services/hive/user_model_hive.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../services/hive/read_hive.dart';
 
 class UserAccountPage extends StatefulWidget {
   const UserAccountPage({Key? key}) : super(key: key);
@@ -12,6 +15,7 @@ class UserAccountPage extends StatefulWidget {
 
 class UserAccountPageState extends State<UserAccountPage> {
   // final ThemeController _themeController = Get.find();
+  UserModelHive user = readUserModelFromHive();
 
   @override
   Widget build(BuildContext context) {
@@ -38,41 +42,43 @@ class UserAccountPageState extends State<UserAccountPage> {
                 ),
                 GestureDetector(
                   onTap: () {},
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 12, bottom: 10),
-                        child: CircleAvatar(
-                            radius: 40.0,
-                            backgroundImage:
-                                AssetImage('assets/images/user.jpeg')),
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'User',
-                            style: Theme.of(context).textTheme.headlineSmall,
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text('user@email.com',
-                              style: Theme.of(context).textTheme.titleMedium)
-                        ],
-                      )
-                    ],
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 12, bottom: 10),
+                          child: CircleAvatar(
+                              radius: 40.0,
+                              backgroundImage:
+                                  AssetImage('assets/images/user.jpeg')),
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              user.givenName,
+                              style: Theme.of(context).textTheme.headlineSmall,
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Text(user.email,
+                                style: Theme.of(context).textTheme.titleMedium)
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(
-                  height: 15,
+                  height: 25,
                 ),
                 const Divider(
                   color: Colors.grey,

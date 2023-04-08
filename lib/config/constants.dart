@@ -11,6 +11,7 @@ const kSignUpFormFillColor = Color.fromARGB(104, 160, 114, 114);
 const kSignUpFormIconsColor = Color.fromARGB(172, 247, 242, 242);
 const kSignUpFormHintTextColor = Color.fromARGB(172, 247, 242, 242);
 const kLightGreyContainer = Color(0xFFF5F5F5);
+const kBottomSheetContainer = Color.fromARGB(255, 59, 173, 129);
 
 const kDefaultPadding = 20.0;
 const kSignUpFormContentPadding = 19.0;
