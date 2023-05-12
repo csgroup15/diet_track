@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import '../config/constants.dart';
 import 'account/settings.dart';
 import 'results/results_screen.dart';
 import 'home/home_screen.dart';
@@ -73,8 +71,6 @@ class _LandingPageState extends State<LandingPage> {
         iconSize: 25,
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        selectedItemColor: kPrimaryColor,
-        unselectedItemColor: kBlackColor,
         type: BottomNavigationBarType.fixed,
       ),
     );

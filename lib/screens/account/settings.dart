@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:diet_track/screens/account/login.dart';
 import 'package:diet_track/services/hive/user_model_hive.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../services/hive/read_hive.dart';
+import '../../utils/theme.dart';
 
 class UserAccountPage extends StatefulWidget {
   const UserAccountPage({Key? key}) : super(key: key);
@@ -14,8 +16,48 @@ class UserAccountPage extends StatefulWidget {
 }
 
 class UserAccountPageState extends State<UserAccountPage> {
-  // final ThemeController _themeController = Get.find();
   UserModelHive user = readUserModelFromHive();
+
+  void _showThemeSelectionDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Select a theme'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            RadioListTile<AdaptiveThemeMode>(
+              title: const Text('Light'),
+              value: AdaptiveThemeMode.light,
+              groupValue: AdaptiveTheme.of(context).mode,
+              onChanged: (value) {
+                AdaptiveTheme.of(context).setThemeMode(value!);
+                Navigator.pop(context);
+              },
+            ),
+            RadioListTile<AdaptiveThemeMode>(
+              title: const Text('Dark'),
+              value: AdaptiveThemeMode.dark,
+              groupValue: AdaptiveTheme.of(context).mode,
+              onChanged: (value) {
+                AdaptiveTheme.of(context).setThemeMode(value!);
+                Navigator.pop(context);
+              },
+            ),
+            RadioListTile<AdaptiveThemeMode>(
+              title: const Text('System Default'),
+              value: AdaptiveThemeMode.system,
+              groupValue: AdaptiveTheme.of(context).mode,
+              onChanged: (value) {
+                AdaptiveTheme.of(context).setThemeMode(value!);
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,16 +130,15 @@ class UserAccountPageState extends State<UserAccountPage> {
                   title: const Text("Help"),
                   onTap: () {},
                 ),
-                const ListTile(
-                  leading: Icon(Icons.dark_mode),
-                  title: Text(
+                ListTile(
+                  leading: const Icon(Icons.dark_mode),
+                  title: const Text(
                     "Theme",
                   ),
-                  // trailing: Switch(
-                  //   activeColor: kPrimaryColor,
-                  //   value: _themeController.isDarkMode.value,
-                  //   onChanged: (value) => _themeController.toggleTheme(),
-                  // ),
+                  subtitle: Text(getCurrentThemeMode(context)),
+                  onTap: () {
+                    _showThemeSelectionDialog(context);
+                  },
                 ),
                 ListTile(
                     leading: const Icon(Icons.logout),

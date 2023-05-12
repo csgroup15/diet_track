@@ -164,10 +164,10 @@ class ResetPasswordState extends State<ResetPassword> {
             decoration: BoxDecoration(
                 color: kWhiteSmokeColor,
                 borderRadius: BorderRadius.circular(7)),
-            child: Column(
+            child: const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: const <Widget>[
+              children: <Widget>[
                 Expanded(
                   flex: 2,
                   child: Align(

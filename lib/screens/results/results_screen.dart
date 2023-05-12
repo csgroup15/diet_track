@@ -3,12 +3,11 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
-import '../../config/constants.dart';
 import '../../models/result_model.dart';
 import '../../services/firebase/read_firebase.dart';
 import '../../services/hive/result_model_hive.dart';
 import '../../utils/formatter.dart';
+import 'result_detail.dart';
 
 final userID = FirebaseAuth.instance.currentUser!.uid;
 
@@ -49,20 +48,14 @@ class _ResultsScreenState extends State<ResultsScreen> {
               padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
               child: Text(
                 'Recent',
-                style: TextStyle(
-                    color: kBlackColor,
-                    fontSize: 31.0,
-                    fontWeight: FontWeight.w300),
+                style: TextStyle(fontSize: 31.0, fontWeight: FontWeight.w300),
               ),
             ),
             const Padding(
               padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
               child: Text(
                 'Results',
-                style: TextStyle(
-                    color: kBlackColor,
-                    fontSize: 31.0,
-                    fontWeight: FontWeight.w500),
+                style: TextStyle(fontSize: 31.0, fontWeight: FontWeight.w500),
               ),
             ),
             const SizedBox(
@@ -161,7 +154,13 @@ class _ResultsScreenState extends State<ResultsScreen> {
                           ResultModelHive resultHive = currentBox.getAt(index)!;
                           return GestureDetector(
                             onTap: () {
-                              // Navigate to a details page for this result
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ResultDetailScreen(
+                                          resultHive: resultHive,
+                                        )),
+                              );
                             },
                             child: Container(
                               decoration: BoxDecoration(

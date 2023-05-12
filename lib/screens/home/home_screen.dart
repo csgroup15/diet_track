@@ -12,6 +12,8 @@ import '../../services/hive/write_hive.dart';
 import '../../utils/image.dart';
 import 'package:get/get.dart';
 
+import '../../utils/theme.dart';
+
 final currentUserID = FirebaseAuth.instance.currentUser!.uid;
 
 class HomeScreen extends StatefulWidget {
@@ -67,7 +69,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   clipBehavior: Clip.hardEdge,
                   decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(15)),
-                    color: Colors.white,
+                    color: getCurrentTheme(context) == 'dark'
+                        ? Colors.grey
+                        : Colors.white,
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey.withOpacity(0.2),
@@ -125,11 +129,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    const Center(
+                                                    Center(
                                                       child: Text(
                                                         'Nutrients',
                                                         style: TextStyle(
-                                                          color: Colors.black,
+                                                          color: getCurrentTheme(
+                                                                      context) ==
+                                                                  'dark'
+                                                              ? Colors.white
+                                                              : Colors.black,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           fontSize: 21,
@@ -256,9 +264,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: kPrimaryColor,
                   borderRadius: BorderRadius.circular(19),
                 ),
-                child: Row(
+                child: const Row(
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
+                  children: [
                     Icon(
                       Icons.picture_in_picture_alt,
                       color: kWhiteColor,
@@ -291,9 +299,9 @@ showUploadDialog(BuildContext context) {
         child: Container(
           padding: const EdgeInsets.all(16.0),
           color: kBottomSheetContainer,
-          child: Column(
+          child: const Column(
             mainAxisSize: MainAxisSize.min,
-            children: const [
+            children: [
               CircularProgressIndicator(
                 color: kWhiteColor,
               ),

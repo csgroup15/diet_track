@@ -1,13 +1,13 @@
 import 'dart:async';
 
+import 'package:diet_track/config/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'config/routes.dart';
-import 'config/theme.dart';
-import 'controllers/theme_controller.dart';
 import 'screens/account/login.dart';
 import 'screens/landing_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -50,15 +50,26 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(ThemeController());
-
-    return GetMaterialApp(
-      title: 'Diet Track',
-      theme: AppTheme.lightTheme, // default theme
-      //darkTheme: AppTheme.darkTheme,
-      home: checkAuth(),
-      getPages: AppRoutes.pages(),
-      debugShowCheckedModeBanner: false,
+    return AdaptiveTheme(
+      light: ThemeData(
+        fontFamily: 'SF-Pro-Rounded',
+        brightness: Brightness.light,
+        primarySwatch: kPrimaryColor,
+      ),
+      dark: ThemeData(
+        fontFamily: 'SF-Pro-Rounded',
+        brightness: Brightness.dark,
+        primarySwatch: kPrimaryColor,
+      ),
+      initial: AdaptiveThemeMode.system,
+      builder: (theme, darkTheme) => GetMaterialApp(
+        title: 'Diet Track',
+        theme: theme,
+        darkTheme: darkTheme,
+        home: checkAuth(),
+        getPages: AppRoutes.pages(),
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 
