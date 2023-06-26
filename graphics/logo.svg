@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="297mm"
+   height="210mm"
+   viewBox="0 0 297 210"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   sodipodi:docname="logo.svg"
+   inkscape:export-filename="/home/ron/xcodes/diet_track/assets/images/logo.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     units="mm"
+     showguides="false"
+     inkscape:zoom="0.45878928"
+     inkscape:cx="668.06269"
+     inkscape:cy="341.11521"
+     inkscape:window-width="1366"
+     inkscape:window-height="708"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="13.738707 : 101.42355 : 1"
+       inkscape:vp_y="0 : 413.86889 : 0"
+       inkscape:vp_z="197.76113 : 101.42355 : 1"
+       inkscape:persp3d-origin="105.74992 : 86.938143 : 1"
+       id="perspective8822" />
+    <rect
+       x="351.18837"
+       y="524.38007"
+       width="384.49042"
+       height="111.6428"
+       id="rect50767" />
+    <rect
+       x="177.82159"
+       y="233.41071"
+       width="740.6454"
+       height="223.41657"
+       id="rect5705" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#008000;stroke-width:0.352309;fill-opacity:1"
+       id="rect48021"
+       width="201.75621"
+       height="79.754494"
+       x="53.553463"
+       y="56.990288"
+       inkscape:export-filename="/home/ron/xcodes/serviceapp/assets/images/logo.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <text
+       xml:space="preserve"
+       transform="scale(0.26458333)"
+       id="text50765"
+       style="line-height:1.25;font-family:sans-serif;font-size:40px;letter-spacing:0px;white-space:pre;shape-inside:url(#rect50767)" />
+    <text
+       xml:space="preserve"
+       style="font-size:31.75px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;fill:#ffffff;stroke-width:0.264583"
+       x="74.234352"
+       y="103.84273"
+       id="text51279"
+       inkscape:export-filename="/home/x137/fikapay/branding/logo.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"><tspan
+         sodipodi:role="line"
+         id="tspan51277"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:31.75px;font-family:'Abyssinica SIL';-inkscape-font-specification:'Abyssinica SIL Bold';fill:#ffffff;stroke-width:0.264583"
+         x="74.234352"
+         y="103.84273">DietTrack</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;stroke-width:0.264583"
+       x="71.468124"
+       y="53.83498"
+       id="text15687"><tspan
+         sodipodi:role="line"
+         id="tspan15685"
+         style="stroke-width:0.264583" /></text>
+  </g>
+</svg>

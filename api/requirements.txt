@@ -1,0 +1,9 @@
+numpy
+scipy
+Flask
+jupyter
+matplotlib
+Pillow
+tensorflow
+scikit-learn
+gunicorn==20.1.0

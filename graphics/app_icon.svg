@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="845.38745mm"
+   height="512mm"
+   viewBox="0 0 845.38745 512"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   sodipodi:docname="app_icon.svg"
+   inkscape:export-filename="/home/ron/xcodes/sports_bingwa/assets/icons/app_icon.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     units="mm"
+     showguides="false"
+     inkscape:zoom="0.15"
+     inkscape:cx="1846.6667"
+     inkscape:cy="1180"
+     inkscape:window-width="1366"
+     inkscape:window-height="708"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     inkscape:snap-grids="false">
+    <inkscape:grid
+       type="xygrid"
+       id="grid967"
+       originx="136.33097"
+       originy="-63.264491" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2">
+    <linearGradient
+       id="linearGradient5640"
+       inkscape:swatch="solid">
+      <stop
+         style="stop-color:#4b0082;stop-opacity:1;"
+         offset="0"
+         id="stop5638" />
+    </linearGradient>
+    <rect
+       x="850.34918"
+       y="281.69122"
+       width="95.637146"
+       height="142.69348"
+       id="rect45152" />
+    <rect
+       x="849.19171"
+       y="274.15598"
+       width="140.74146"
+       height="153.12151"
+       id="rect40077" />
+    <rect
+       x="-500.75317"
+       y="260.05643"
+       width="17.833776"
+       height="105.02689"
+       id="rect363" />
+    <rect
+       x="-675.00598"
+       y="121.66634"
+       width="380.89914"
+       height="215.13652"
+       id="rect71506" />
+    <rect
+       x="430.72296"
+       y="501.34866"
+       width="148.05164"
+       height="117.54857"
+       id="rect62982" />
+    <rect
+       x="351.18839"
+       y="524.38007"
+       width="384.49042"
+       height="111.6428"
+       id="rect50767" />
+    <rect
+       x="177.82159"
+       y="233.41071"
+       width="740.64539"
+       height="223.41656"
+       id="rect5705" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(136.33098,-63.264495)">
+    <text
+       xml:space="preserve"
+       transform="scale(0.26458333)"
+       id="text50765"
+       style="font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;white-space:pre;shape-inside:url(#rect50767)" />
+    <text
+       xml:space="preserve"
+       transform="scale(0.26458333)"
+       id="text62980"
+       style="font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;white-space:pre;shape-inside:url(#rect62982)" />
+    <text
+       xml:space="preserve"
+       transform="scale(0.26458333)"
+       id="text361"
+       style="font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;white-space:pre;shape-inside:url(#rect363)" />
+    <text
+       xml:space="preserve"
+       style="font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;stroke-width:0.264583"
+       x="-137.20947"
+       y="107.22455"
+       id="text501"><tspan
+         sodipodi:role="line"
+         id="tspan499"
+         style="stroke-width:0.264583"
+         x="-137.20947"
+         y="107.22455">`</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="scale(0.26458333)"
+       id="text40075"
+       style="font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;white-space:pre;shape-inside:url(#rect40077)" />
+    <g
+       id="g60087"
+       transform="translate(-34.752457,-14.774483)"
+       inkscape:export-filename="/home/ron/xcodes/diet_track/assets/images/app_icon.png"
+       inkscape:export-xdpi="47.625"
+       inkscape:export-ydpi="47.625"
+       style="fill:#1b8304;fill-opacity:1">
+      <circle
+         style="fill:#1b8304;fill-opacity:1;stroke-width:1.8696"
+         id="path454"
+         cx="310.05887"
+         cy="334.05313"
+         inkscape:export-filename="/home/ron/xcodes/diet_track/assets/images/icon.png"
+         inkscape:export-xdpi="96"
+         inkscape:export-ydpi="96"
+         r="256" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:352.778px;line-height:3;font-family:Mukti;-inkscape-font-specification:'Mukti Bold';mix-blend-mode:hard-light;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="162.83908"
+       y="449.37448"
+       id="text1988"><tspan
+         sodipodi:role="line"
+         id="tspan1986"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:352.778px;font-family:'IBM Plex Sans';-inkscape-font-specification:'IBM Plex Sans Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
+         x="162.83908"
+         y="449.37448">D</tspan></text>
+    <rect
+       style="fill:#1b8304;fill-opacity:1;stroke-width:0.802579"
+       id="rect13184"
+       width="97.699692"
+       height="38.443665"
+       x="302.70078"
+       y="247.22997"
+       rx="12.100525" />
+  </g>
+</svg>
