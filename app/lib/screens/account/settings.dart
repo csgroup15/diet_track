@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 
 import '../../services/hive/read_hive.dart';
 import '../../utils/theme.dart';
+import '../manual/user_manual.dart';
 
 class UserAccountPage extends StatefulWidget {
   const UserAccountPage({Key? key}) : super(key: key);
@@ -96,7 +97,7 @@ class UserAccountPageState extends State<UserAccountPage> {
                           child: CircleAvatar(
                               radius: 40.0,
                               backgroundImage:
-                                  AssetImage('assets/images/user.jpeg')),
+                                  AssetImage('assets/images/user.png')),
                         ),
                         const SizedBox(
                           width: 20,
@@ -126,9 +127,11 @@ class UserAccountPageState extends State<UserAccountPage> {
                   color: Colors.grey,
                 ),
                 ListTile(
-                  leading: const Icon(Icons.question_mark_rounded),
+                  leading: const Icon(Icons.help_center),
                   title: const Text('Help'),
-                  onTap: () {},
+                  onTap: () {
+                    Get.to(const UserManualPage());
+                  },
                 ),
                 ListTile(
                   leading: const Icon(Icons.dark_mode),

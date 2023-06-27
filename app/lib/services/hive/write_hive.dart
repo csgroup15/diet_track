@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:diet_track/models/nutrient_model.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../config/constants.dart';
 import '../../models/user_model.dart';
 import '../../utils/formatter.dart';
 import '../firebase/read_firebase.dart';
+import 'nutrient_model_hive.dart';
 import 'result_model_hive.dart';
 import 'user_model_hive.dart';
 
@@ -55,16 +57,27 @@ Future<void> saveFoodScanResultsToHive(String currUserID) async {
         existingResultsIDs.remove(result.resultID);
         continue;
       }
+
       String? foodPicPathHive =
           await storeFoodPicPathToHive(result.foodPicURL, result.resultID);
+
+      // Convert FoodNutrient list to FoodNutrientHive list
+      final identifiedFoodNutrientsHive =
+          (result.identifiedFoodNutrients as List<FoodNutrient>)
+              .map((FoodNutrient foodNutrient) => FoodNutrientHive(
+                    name: foodNutrient.name,
+                    percentage: foodNutrient.percentage,
+                  ))
+              .toList();
 
       final resultModelHive = ResultModelHive(
         resultID: result.resultID,
         timestamp: formatTimestampToDatetime(result.timestamp),
         userID: result.userID,
         foodPicURL: foodPicPathHive,
-        identifiedFoodIDs: result.identifiedFoodIDs,
+        identifiedFoodNutrients: identifiedFoodNutrientsHive,
       );
+
       await userResultsBox.put(result.resultID, resultModelHive);
       if (kDebugMode) {
         print('Saved result ${result.resultID} to Hive');

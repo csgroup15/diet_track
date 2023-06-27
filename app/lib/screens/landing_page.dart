@@ -1,3 +1,4 @@
+import 'package:diet_track/config/constants.dart';
 import 'package:diet_track/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'account/settings.dart';
@@ -71,6 +72,7 @@ class _LandingPageState extends State<LandingPage> {
         iconSize: 25,
         showSelectedLabels: false,
         showUnselectedLabels: false,
+        selectedItemColor: kPrimaryColor,
         type: BottomNavigationBarType.fixed,
       ),
     );

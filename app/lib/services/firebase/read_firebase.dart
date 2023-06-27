@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:diet_track/models/nutrient_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -34,13 +35,16 @@ Future<List<ResultModel>> getUserFoodScanResultsFromFirebase(
     final resultID = resultDoc.id;
     final foodPicURL = data['foodPicURL'] as String;
     final timestamp = data['timestamp'] as Timestamp;
-    final identifiedFoodIDs =
-        List<String>.from(data['identifiedFoodIDs'] ?? []);
+    final identifiedFoodNutrientsData = data['identifiedFoodNutrients'];
+    final identifiedFoodNutrients =
+        (identifiedFoodNutrientsData as List<dynamic>)
+            .map((foodNutrientData) => FoodNutrient.fromMap(foodNutrientData))
+            .toList();
     return ResultModel(
       resultID: resultID,
       foodPicURL: foodPicURL,
       timestamp: timestamp,
-      identifiedFoodIDs: identifiedFoodIDs,
+      identifiedFoodNutrients: identifiedFoodNutrients,
       userID: currentUserID,
     );
   }).toList();

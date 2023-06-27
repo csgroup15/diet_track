@@ -21,7 +21,7 @@ class ResultModelHiveAdapter extends TypeAdapter<ResultModelHive> {
       timestamp: fields[1] as DateTime,
       userID: fields[2] as String,
       foodPicURL: fields[3] as String,
-      identifiedFoodIDs: (fields[4] as List?)?.cast<String>(),
+      identifiedFoodNutrients: (fields[4] as List?)?.cast<FoodNutrientHive>(),
     );
   }
 
@@ -38,7 +38,7 @@ class ResultModelHiveAdapter extends TypeAdapter<ResultModelHive> {
       ..writeByte(3)
       ..write(obj.foodPicURL)
       ..writeByte(4)
-      ..write(obj.identifiedFoodIDs);
+      ..write(obj.identifiedFoodNutrients);
   }
 
   @override

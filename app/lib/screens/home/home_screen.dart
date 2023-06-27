@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:diet_track/services/hive/nutrient_model_hive.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -100,13 +101,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                     width: 2,
                                   ),
                                 ),
-                                width: 400,
                                 height: 400,
                                 child: ValueListenableBuilder(
                                   valueListenable: resultsBox.listenable(),
                                   builder: (context, box, widget) {
                                     final ResultModelHive? latestResult =
-                                        readLatestUserResultFromHive(); // get the latest result from the box
+                                        readLatestUserResultFromHive();
+                                    final List<FoodNutrientHive>? nutrients =
+                                        latestResult
+                                            ?.identifiedFoodNutrients; // get the latest result from the box
                                     return latestResult != null
                                         ? Column(
                                             crossAxisAlignment:
@@ -116,10 +119,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 child: ClipRRect(
                                                   borderRadius:
                                                       BorderRadius.circular(10),
-                                                  child: Image.file(
-                                                    File(latestResult
-                                                        .foodPicURL),
-                                                    fit: BoxFit.cover,
+                                                  child: SizedBox(
+                                                    width: 350,
+                                                    height: 200,
+                                                    child: Image.file(
+                                                      File(latestResult
+                                                          .foodPicURL),
+                                                      fit: BoxFit.cover,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
@@ -145,22 +152,35 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         ),
                                                       ),
                                                     ),
-                                                    const SizedBox(height: 5),
-                                                    Center(
-                                                      child: Text(
-                                                        latestResult
-                                                            .identifiedFoodIDs!
-                                                            .join(', '),
-                                                        style: const TextStyle(
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    117,
-                                                                    112,
-                                                                    112),
-                                                            fontSize: 17),
-                                                      ),
+                                                    const SizedBox(
+                                                      height: 15,
                                                     ),
+                                                    Center(
+                                                        child: ListView.builder(
+                                                      shrinkWrap: true,
+                                                      itemCount:
+                                                          nutrients!.length,
+                                                      itemBuilder:
+                                                          (BuildContext context,
+                                                              int index) {
+                                                        FoodNutrientHive
+                                                            nutrient =
+                                                            nutrients[index];
+                                                        return Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .fromLTRB(
+                                                                  0, 5, 0, 0),
+                                                          child: Text(
+                                                            '${nutrient.name}: ${nutrient.percentage.toStringAsFixed(1)}%',
+                                                            style:
+                                                                const TextStyle(
+                                                              fontSize: 17,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                    )),
                                                   ],
                                                 ),
                                               ),
@@ -298,33 +318,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-}
-
-showUploadDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) {
-      return Dialog(
-        child: Container(
-          padding: const EdgeInsets.all(16.0),
-          color: kBottomSheetContainer,
-          child: const Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CircularProgressIndicator(
-                color: kWhiteColor,
-              ),
-              SizedBox(height: 16.0),
-              Text('Uploading image...'),
-            ],
-          ),
-        ),
-      );
-    },
-  );
-}
-
-hideUploadDialog(BuildContext context) {
-  Navigator.of(context).pop();
 }

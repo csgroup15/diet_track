@@ -1,4 +1,6 @@
 import 'package:hive/hive.dart';
+
+import 'nutrient_model_hive.dart';
 part 'result_model_hive.g.dart';
 
 @HiveType(typeId: 2)
@@ -12,12 +14,13 @@ class ResultModelHive {
   @HiveField(3)
   String foodPicURL;
   @HiveField(4)
-  final List<String>? identifiedFoodIDs;
+  final List<FoodNutrientHive>? identifiedFoodNutrients;
 
-  ResultModelHive(
-      {required this.resultID,
-      required this.timestamp,
-      required this.userID,
-      required this.foodPicURL,
-      this.identifiedFoodIDs});
+  ResultModelHive({
+    required this.resultID,
+    required this.timestamp,
+    required this.userID,
+    required this.foodPicURL,
+    this.identifiedFoodNutrients,
+  });
 }

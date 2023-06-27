@@ -11,6 +11,7 @@ import 'screens/data_load_screen.dart';
 import 'screens/landing_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'services/firebase/auth_service.dart';
+import 'services/hive/nutrient_model_hive.dart';
 import 'services/hive/result_model_hive.dart';
 import 'services/hive/user_model_hive.dart';
 import 'services/hive/write_hive.dart';
@@ -26,6 +27,7 @@ Future<void> main() async {
 
     await Hive.initFlutter();
     Hive.registerAdapter(UserModelHiveAdapter());
+    Hive.registerAdapter(FoodNutrientHiveAdapter());
     await Hive.openBox('user_info');
     Hive.registerAdapter(ResultModelHiveAdapter());
     await Hive.openBox('results');
@@ -50,20 +52,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return AdaptiveTheme(
       light: ThemeData(
-        // useMaterial3: true,
-        // colorScheme: ColorScheme.fromSeed(
-        //   seedColor: kPrimaryColor,
-        // ),
         fontFamily: 'SF-Pro-Rounded',
         brightness: Brightness.light,
+        primarySwatch: Colors.green,
       ),
       dark: ThemeData(
         fontFamily: 'SF-Pro-Rounded',
-        // useMaterial3: true,
-        // colorScheme: ColorScheme.fromSeed(
-        //   seedColor: kPrimaryColor,
-        // ),
         brightness: Brightness.dark,
+        primarySwatch: Colors.green,
       ),
       initial: AdaptiveThemeMode.system,
       builder: (theme, darkTheme) => GetMaterialApp(
