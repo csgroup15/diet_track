@@ -47,7 +47,6 @@ flutter:
     - assets/fonts/
     - assets/images/
     - assets/icons/
-    - assets/models/
 
   fonts:
      - family: SF-Pro-Rounded
