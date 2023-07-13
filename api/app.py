@@ -100,9 +100,9 @@ def index():
             return render_template('index.html', error='No image file uploaded')
 
         # Check if the file is allowed
-        allowed_extensions = ['jpg', 'jpeg', 'png']
+        allowed_extensions = ['jpg', 'jpeg']
         if not any(image_file.filename.lower().endswith(ext) for ext in allowed_extensions):
-            return render_template('index.html', error='Invalid file format. Please upload a JPG or PNG image.')
+            return render_template('index.html', error='Invalid file format. Please upload a JPG')
 
         # Read the uploaded image
         image = cv2.imdecode(np.fromstring(image_file.read(), np.uint8), cv2.IMREAD_COLOR)
