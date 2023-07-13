@@ -1,4 +1,5 @@
 numpy
+cv2
 scipy
 Flask
 jupyter
