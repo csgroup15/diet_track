@@ -15,10 +15,6 @@
         <input type="submit" value="Upload">
     </form>
 
-    {% if image_path %}
-        <h2>Uploaded Image</h2>
-        <img src="{{ image_path }}" alt="Uploaded Image">
-
         <h2>Segmentation Results</h2>
         <ul>
             {% for label, percentage in class_percentages %}
