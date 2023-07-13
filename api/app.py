@@ -15,7 +15,7 @@ CLASSES = None
 COLORMAP = None
 model = None
 
-# Get the current working directory
+# get the current working directory
 current_directory = os.getcwd()
 
 # model path using the relative path
@@ -37,7 +37,6 @@ def grayscale_to_rgb(mask, classes, colormap):
 
 def save_results(image, pred):
     h, w, _ = image.shape
-    # line = np.ones((h, 10, 3)) * 255
 
     pred = np.expand_dims(pred, axis=-1)
     pred = grayscale_to_rgb(pred, CLASSES, COLORMAP)
