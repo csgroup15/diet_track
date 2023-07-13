@@ -3,7 +3,6 @@ import tensorflow as tf
 import numpy as np
 import scipy.io
 import cv2
-import os
 
 app = Flask(__name__, template_folder='')
 
@@ -15,14 +14,11 @@ CLASSES = None
 COLORMAP = None
 model = None
 
-# get the current working directory
-current_directory = os.getcwd()
-
 # model path using the relative path
-current_model_path = os.path.join(current_directory, '..', 'model', 'segmentation_model.h5')
+current_model_path = ('/model_files/segmentation_model.h5')
 
 # food color map path using the relative path
-current_food_map_path = os.path.join(current_directory, '..', 'model', 'foods_colormap.mat')
+current_food_map_path = ('/model_files/foods_colormap.mat')
 
 def grayscale_to_rgb(mask, classes, colormap):
     h, w, _ = mask.shape
