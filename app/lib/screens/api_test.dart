@@ -14,26 +14,26 @@ class ApiTest extends StatefulWidget {
 
 class ApiTestState extends State<ApiTest> {
   bool _isLoading = false;
-  String? _predictionResult;
+  Map<String, dynamic>? _segmentationResult;
 
   @override
   void initState() {
     super.initState();
-    _predictImage();
+    _segmentImage();
   }
 
-  Future<void> _predictImage() async {
+  Future<void> _segmentImage() async {
     setState(() {
       _isLoading = true;
     });
 
     try {
-      final result = await sendImageForPrediction(widget.imagePath);
+      final result = await sendImageForSegmentation(widget.imagePath);
       if (kDebugMode) {
-        print(result);
+        print('Results on the API test Page: $result');
       }
       setState(() {
-        _predictionResult = result;
+        _segmentationResult = result;
       });
     } catch (e) {
       // Handle errors
@@ -48,19 +48,23 @@ class ApiTestState extends State<ApiTest> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Image Prediction'),
+          title: const Text('Image Segementation'),
         ),
         body: _isLoading
             ? const Center(
                 child: CircularProgressIndicator(),
               )
-            : _buildResultWidget(_predictionResult!));
+            : _segmentationResult != null
+                ? _buildResultWidget(_segmentationResult!)
+                : const Center(
+                    child: Text('No result'),
+                  ));
   }
 
-  Widget _buildResultWidget(String res) {
+  Widget _buildResultWidget(Map<String, dynamic>? res) {
     return Center(
       child: Text(
-        'Result: $res',
+        'Segmentation Result: $res',
         style: const TextStyle(fontSize: 16),
       ),
     );

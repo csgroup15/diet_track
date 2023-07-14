@@ -1,26 +1,28 @@
-import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
-Future<String> sendImageForPrediction(String imgPath) async {
+Future<Map<String, dynamic>> sendImageForSegmentation(String imagePath) async {
+  var apiUrl =
+      'https://f9c8-102-85-247-167.ngrok-free.app'; // Update with the Flask API URL
+
   try {
-    FormData formData = FormData.fromMap({
-      'file': await MultipartFile.fromFile(imgPath),
-    });
+    var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
+    request.headers['ngrok-skip-browser-warning'] =
+        '69420'; // Add the custom header
+    request.files.add(await http.MultipartFile.fromPath('image', imagePath));
 
-    Response response = await Dio().post(
-      'https://diet-track-app.onrender.com/predict',
-      data: formData,
-    );
+    var response = await request.send();
+    var responseString = await response.stream.bytesToString();
 
-    // Parse the JSON response
-    Map<String, dynamic> data = response.data;
-    String pokemonName = data['pokemon'];
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(responseString);
+      var classPercentages = jsonResponse['class_percentages'];
 
-    return pokemonName;
-  } catch (e) {
-    if (kDebugMode) {
-      print(e);
+      return classPercentages;
+    } else {
+      throw Exception('Failed with status: ${response.statusCode}');
     }
-    return 'Image not recognized';
+  } catch (e) {
+    throw Exception('Error: $e');
   }
 }

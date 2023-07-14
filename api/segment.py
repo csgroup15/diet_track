@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request
+from flask import Flask, request, jsonify
 import tensorflow as tf
 import numpy as np
 import scipy.io
 import cv2
+import json
 
-app = Flask(__name__, template_folder='')
+app = Flask(__name__)
 
 # Global variables
 IMG_H = 320
@@ -15,10 +16,10 @@ COLORMAP = None
 model = None
 
 # model path using the relative path
-current_model_path = ('/model_files/segmentation_model.h5')
+current_model_path = '/home/ron/docs/dt_web/model/segmentation_model.h5'
 
 # food color map path using the relative path
-current_food_map_path = ('/model_files/foods_colormap.mat')
+current_food_map_path = '/home/ron/docs/dt_web/model/foods_colormap.mat'
 
 def grayscale_to_rgb(mask, classes, colormap):
     h, w, _ = mask.shape
@@ -82,47 +83,44 @@ def load_model():
     COLORMAP = colormap
     CLASSES = classes
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['POST'])
 def index():
-    if request.method == 'POST':
-        # Check if an image file was uploaded
-        if 'image' not in request.files:
-            return render_template('index.html', error='No image file uploaded')
+    if 'image' not in request.files:
+        return jsonify({'error': 'No image file uploaded'}), 400
 
-        image_file = request.files['image']
-        
-        # Check if the file is empty
-        if image_file.filename == '':
-            return render_template('index.html', error='No image file uploaded')
+    image_file = request.files['image']
+    
+    if image_file.filename == '':
+        return jsonify({'error': 'No image file uploaded'}), 400
 
-        # Check if the file is allowed
-        allowed_extensions = ['jpg', 'jpeg']
-        if not any(image_file.filename.lower().endswith(ext) for ext in allowed_extensions):
-            return render_template('index.html', error='Invalid file format. Please upload a JPG')
+    allowed_extensions = ['jpg', 'jpeg']
+    if not any(image_file.filename.lower().endswith(ext) for ext in allowed_extensions):
+        return jsonify({'error': 'Invalid file format. Please upload a JPG'}), 400
 
-        # Read the uploaded image
+    try:
         image = cv2.imdecode(np.fromstring(image_file.read(), np.uint8), cv2.IMREAD_COLOR)
         image = cv2.resize(image, (IMG_W, IMG_H))
         image = image / 255.0
         image = np.expand_dims(image, axis=0)
 
-        # Perform segmentation
         pred = model.predict(image, verbose=0)[0]
         pred = np.argmax(pred, axis=-1)
         pred = pred.astype(np.float32)
 
-        # Save the results
         save_results(image[0] * 255.0, pred)
 
-        # Get the percentages
         class_percentages = getPercentages(pred, COLORMAP, CLASSES)
-        class_percentages = [(label, percentage) for label, percentage in zip(CLASSES, class_percentages)]
+        class_percentages = {label: percentage for label, percentage in zip(CLASSES, class_percentages)}
 
-        # Render the template with the results
-        return render_template('index.html', image_path='path/to/saved/image.jpg', class_percentages=class_percentages)
+        response = {
+            'image_path': 'path/to/saved/image.jpg',
+            'class_percentages': class_percentages
+        }
 
-    # Render the initial template
-    return render_template('index.html')
+        return jsonify(response), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == "__main__":
     load_model()

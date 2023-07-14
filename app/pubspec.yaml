@@ -1,6 +1,6 @@
 name: diet_track
 publish_to: 'none' 
-version: 0.0.1+13
+version: 0.0.3+15
 
 environment:
   sdk: '>=2.19.4 <3.0.0'
@@ -29,6 +29,7 @@ dependencies:
 
   #dart run flutter_launcher_icons
   flutter_launcher_icons: ^0.13.1
+  http: ^1.1.0
 
 dev_dependencies:
   #dart run build_runner build
