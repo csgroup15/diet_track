@@ -43,7 +43,7 @@ def save_results(image, pred):
     # cat_images = np.concatenate([image, line, mask, line, pred], axis=1)
     # cv2.imwrite(save_image_path, cat_images)
 
-def getPercentages(mask,colormap,class_list):
+def getPercentages(mask, colormap, class_list):
     mask = np.expand_dims(mask, axis=-1)
     mask = grayscale_to_rgb(mask, CLASSES, COLORMAP)
     class_counts = np.zeros(len(class_list))
@@ -110,11 +110,16 @@ def index():
         save_results(image[0] * 255.0, pred)
 
         class_percentages = getPercentages(pred, COLORMAP, CLASSES)
-        class_percentages = {label: percentage for label, percentage in zip(CLASSES, class_percentages)}
+
+        # Filter out background class and classes with percentages less than 0.3
+        filtered_percentages = {}
+        for label, percentage in zip(CLASSES, class_percentages):
+            if label != 'background' and percentage >= 0.3:
+                filtered_percentages[label] = percentage
 
         response = {
             'image_path': 'path/to/saved/image.jpg',
-            'class_percentages': class_percentages
+            'class_percentages': filtered_percentages
         }
 
         return jsonify(response), 200

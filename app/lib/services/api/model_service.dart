@@ -2,8 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 Future<Map<String, dynamic>> sendImageForSegmentation(String imagePath) async {
-  var apiUrl =
-      'https://f9c8-102-85-247-167.ngrok-free.app'; // Update with the Flask API URL
+  var apiUrl = 'https://777d-197-239-8-171.ngrok-free.app';
 
   try {
     var request = http.MultipartRequest('POST', Uri.parse(apiUrl));

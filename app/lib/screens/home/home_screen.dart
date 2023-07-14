@@ -2,19 +2,18 @@ import 'dart:io';
 
 import 'package:diet_track/services/hive/nutrient_model_hive.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../config/constants.dart';
+import '../../services/api/model_service.dart';
 import '../../services/hive/read_hive.dart';
 import '../../services/hive/result_model_hive.dart';
 import '../../utils/image.dart';
 import 'package:get/get.dart';
 
 import '../../utils/theme.dart';
-import '../api_test.dart';
-
-const kModelName = 'image_scene';
 
 final currentUserID = FirebaseAuth.instance.currentUser!.uid;
 
@@ -31,11 +30,35 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late final Box resultsBox;
+  bool _isLoading = false;
+  Map<String, dynamic>? _segmentationResult;
 
   @override
   void initState() {
     super.initState();
     resultsBox = Hive.box('results');
+  }
+
+  Future<void> _segmentImage(String imagePath) async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final result = await sendImageForSegmentation(imagePath);
+      if (kDebugMode) {
+        print('Results on the API test Page: $result');
+      }
+      setState(() {
+        _segmentationResult = result;
+      });
+    } catch (e) {
+      // Handle errors
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -205,6 +228,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
+            Container(
+              child: _isLoading
+                  ? const Text('No results loading now')
+                  : _segmentationResult != null
+                      ? _buildResultWidget(_segmentationResult!)
+                      : const Center(
+                          child: Text('No result'),
+                        ),
+            ),
             const SizedBox(
               height: 30,
             ),
@@ -240,81 +272,108 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(
               height: 40,
             ),
-            GestureDetector(
-              onTap: () {
-                Get.bottomSheet(
-                  backgroundColor: kBottomSheetContainer,
-                  Wrap(
-                    children: [
-                      ListTile(
-                        leading: const Icon(Icons.browse_gallery),
-                        title: const Text(
-                          'From Gallery',
+            _isLoading
+                ? Container(
+                    height: 40,
+                    width: 250,
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    decoration: BoxDecoration(
+                      color: kPrimaryColor,
+                      borderRadius: BorderRadius.circular(19),
+                    ),
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                        color: kWhiteColor,
+                      ),
+                    ))
+                : GestureDetector(
+                    onTap: () {
+                      Get.bottomSheet(
+                        backgroundColor: kPrimaryColor,
+                        Wrap(
+                          children: [
+                            ListTile(
+                              leading: const Icon(Icons.browse_gallery),
+                              title: const Text(
+                                'From Gallery',
+                              ),
+                              onTap: () async {
+                                Get.back();
+                                File? photo = await pickImageFromPhoneGallery();
+                                if (!mounted) return;
+                                if (photo != null) {
+                                  await _segmentImage(photo.path);
+                                }
+                                // Get.to(() => ApiTest(imagePath: photo!.path));
+                                // getFoodPicSegments(
+                                //     File(readClassModelPath()), photo!);
+                                // showUploadDialog(context);
+                                // await writeFoodScanResultsToFirestore(
+                                //     currentUserID, photo!);
+                                // await saveFoodScanResultsToHive(currentUserID);
+                                // if (!mounted) return;
+                                // hideUploadDialog(context);
+                              },
+                            ),
+                            ListTile(
+                              leading: const Icon(Icons.camera),
+                              title: const Text('From Camera'),
+                              onTap: () async {
+                                Get.back();
+                                // File? photo = await pickImageFromPhoneCamera();
+                                if (!mounted) return;
+                                // getFoodPicSegments(
+                                //     File(readClassModelPath()), photo!);
+                                // showUploadDialog(context);
+                                // await writeFoodScanResultsToFirestore(
+                                //     currentUserID, photo!);
+                                // await saveFoodScanResultsToHive(currentUserID);
+                                // if (!mounted) return;
+                                // hideUploadDialog(context);
+                              },
+                            ),
+                          ],
                         ),
-                        onTap: () async {
-                          Get.back();
-                          File? photo = await pickImageFromPhoneGallery();
-                          if (!mounted) return;
-                          Get.to(() => ApiTest(imagePath: photo!.path));
-                          // getFoodPicSegments(
-                          //     File(readClassModelPath()), photo!);
-                          // showUploadDialog(context);
-                          // await writeFoodScanResultsToFirestore(
-                          //     currentUserID, photo!);
-                          // await saveFoodScanResultsToHive(currentUserID);
-                          // if (!mounted) return;
-                          // hideUploadDialog(context);
-                        },
+                      );
+                    },
+                    child: Container(
+                      height: 40,
+                      width: 250,
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                        color: kPrimaryColor,
+                        borderRadius: BorderRadius.circular(19),
                       ),
-                      ListTile(
-                        leading: const Icon(Icons.camera),
-                        title: const Text('From Camera'),
-                        onTap: () async {
-                          Get.back();
-                          // File? photo = await pickImageFromPhoneCamera();
-                          if (!mounted) return;
-                          // getFoodPicSegments(
-                          //     File(readClassModelPath()), photo!);
-                          // showUploadDialog(context);
-                          // await writeFoodScanResultsToFirestore(
-                          //     currentUserID, photo!);
-                          // await saveFoodScanResultsToHive(currentUserID);
-                          // if (!mounted) return;
-                          // hideUploadDialog(context);
-                        },
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.picture_in_picture_alt,
+                            color: kWhiteColor,
+                          ),
+                          SizedBox(width: 17),
+                          Text(
+                            'Choose Food Image',
+                            style: TextStyle(fontSize: 17, color: kWhiteColor),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                );
-              },
-              child: Container(
-                height: 40,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                  color: kPrimaryColor,
-                  borderRadius: BorderRadius.circular(19),
-                ),
-                child: const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.picture_in_picture_alt,
-                      color: kWhiteColor,
-                    ),
-                    SizedBox(width: 10),
-                    Text(
-                      'Choose Food Image',
-                      style: TextStyle(fontSize: 17, color: kWhiteColor),
-                    ),
-                  ],
-                ),
-              ),
-            ),
             const SizedBox(
               height: 40,
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildResultWidget(Map<String, dynamic>? res) {
+    return Center(
+      child: Text(
+        'Segmentation Result: $res',
+        style: const TextStyle(fontSize: 16),
       ),
     );
   }
