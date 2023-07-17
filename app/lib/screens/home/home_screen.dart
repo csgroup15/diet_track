@@ -8,12 +8,15 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../config/constants.dart';
 import '../../services/api/model_service.dart';
+import '../../services/firebase/write_firebase.dart';
 import '../../services/hive/read_hive.dart';
 import '../../services/hive/result_model_hive.dart';
+import '../../services/hive/write_hive.dart';
 import '../../utils/image.dart';
 import 'package:get/get.dart';
 
 import '../../utils/theme.dart';
+import 'nutrient_calculation.dart';
 
 final currentUserID = FirebaseAuth.instance.currentUser!.uid;
 
@@ -31,7 +34,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late final Box resultsBox;
   bool _isLoading = false;
-  Map<String, dynamic>? _segmentationResult;
 
   @override
   void initState() {
@@ -39,19 +41,22 @@ class _HomeScreenState extends State<HomeScreen> {
     resultsBox = Hive.box('results');
   }
 
-  Future<void> _segmentImage(String imagePath) async {
+  Future<void> _segmentImage(File photo) async {
     setState(() {
       _isLoading = true;
     });
 
     try {
-      final result = await sendImageForSegmentation(imagePath);
+      final result = await sendImageForSegmentation(photo.path);
       if (kDebugMode) {
-        print('Results on the API test Page: $result');
+        print('Segmentation Results: $result');
       }
-      setState(() {
-        _segmentationResult = result;
-      });
+      // setState(() {
+      //   _segmentationResult = result;
+      // });
+      List<dynamic> nutrients = calculateNutrients(result);
+      await writeFoodScanResultsToFirestore(currentUserID, photo, nutrients);
+      await saveFoodScanResultsToHive(currentUserID);
     } catch (e) {
       // Handle errors
     } finally {
@@ -59,6 +64,11 @@ class _HomeScreenState extends State<HomeScreen> {
         _isLoading = false;
       });
     }
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text('Results back. Check your nutrients above'),
+      duration: Duration(seconds: 5),
+    ));
   }
 
   @override
@@ -195,7 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                       .fromLTRB(
                                                                   0, 5, 0, 0),
                                                           child: Text(
-                                                            '${nutrient.name}: ${nutrient.percentage.toStringAsFixed(1)}%',
+                                                            '${nutrient.name}: ${nutrient.grams.toStringAsFixed(1)} grams',
                                                             style:
                                                                 const TextStyle(
                                                               fontSize: 17,
@@ -227,15 +237,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-            ),
-            Container(
-              child: _isLoading
-                  ? const Text('No results loading now')
-                  : _segmentationResult != null
-                      ? _buildResultWidget(_segmentationResult!)
-                      : const Center(
-                          child: Text('No result'),
-                        ),
             ),
             const SizedBox(
               height: 30,
@@ -302,17 +303,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                 File? photo = await pickImageFromPhoneGallery();
                                 if (!mounted) return;
                                 if (photo != null) {
-                                  await _segmentImage(photo.path);
+                                  await _segmentImage(photo);
+
+                                  // if (!mounted) return;
+                                  // showUploadDialog(context);
+                                  // List<double> nutrients =
+                                  //     calculateNutrients(_segmentationResult!);
+                                  // await writeFoodScanResultsToFirestore(
+                                  //     currentUserID, photo, nutrients);
+                                  // await saveFoodScanResultsToHive(
+                                  //     currentUserID);
+                                  // if (!mounted) return;
+                                  // hideUploadDialog(context);
                                 }
-                                // Get.to(() => ApiTest(imagePath: photo!.path));
-                                // getFoodPicSegments(
-                                //     File(readClassModelPath()), photo!);
-                                // showUploadDialog(context);
-                                // await writeFoodScanResultsToFirestore(
-                                //     currentUserID, photo!);
-                                // await saveFoodScanResultsToHive(currentUserID);
-                                // if (!mounted) return;
-                                // hideUploadDialog(context);
                               },
                             ),
                             ListTile(
@@ -320,16 +323,19 @@ class _HomeScreenState extends State<HomeScreen> {
                               title: const Text('From Camera'),
                               onTap: () async {
                                 Get.back();
-                                // File? photo = await pickImageFromPhoneCamera();
+                                File? photo = await pickImageFromPhoneCamera();
                                 if (!mounted) return;
-                                // getFoodPicSegments(
-                                //     File(readClassModelPath()), photo!);
-                                // showUploadDialog(context);
-                                // await writeFoodScanResultsToFirestore(
-                                //     currentUserID, photo!);
-                                // await saveFoodScanResultsToHive(currentUserID);
-                                // if (!mounted) return;
-                                // hideUploadDialog(context);
+                                if (photo != null) {
+                                  await _segmentImage(photo);
+                                  // getFoodPicSegments(
+                                  //     File(readClassModelPath()), photo!);
+                                  // showUploadDialog(context);
+                                  // await writeFoodScanResultsToFirestore(
+                                  //     currentUserID, photo!);
+                                  // await saveFoodScanResultsToHive(currentUserID);
+                                  // if (!mounted) return;
+                                  // hideUploadDialog(context);
+                                }
                               },
                             ),
                           ],
@@ -365,15 +371,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildResultWidget(Map<String, dynamic>? res) {
-    return Center(
-      child: Text(
-        'Segmentation Result: $res',
-        style: const TextStyle(fontSize: 16),
       ),
     );
   }

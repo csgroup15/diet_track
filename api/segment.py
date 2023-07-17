@@ -129,4 +129,4 @@ def index():
 
 if __name__ == "__main__":
     load_model()
-    app.run()
+    app.run('localhost', 5001)

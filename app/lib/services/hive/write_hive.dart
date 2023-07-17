@@ -66,7 +66,7 @@ Future<void> saveFoodScanResultsToHive(String currUserID) async {
           (result.identifiedFoodNutrients as List<FoodNutrient>)
               .map((FoodNutrient foodNutrient) => FoodNutrientHive(
                     name: foodNutrient.name,
-                    percentage: foodNutrient.percentage,
+                    grams: foodNutrient.grams,
                   ))
               .toList();
 

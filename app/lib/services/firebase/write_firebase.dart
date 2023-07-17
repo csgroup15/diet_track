@@ -34,7 +34,7 @@ Future<String?> uploadFoodPicToFirestorage(
 }
 
 Future<void> writeFoodScanResultsToFirestore(
-    String userID, File foodPic) async {
+    String userID, File foodPic, List<dynamic> nutrients) async {
   String? picURL = await uploadFoodPicToFirestorage(userID, foodPic);
 
   await FirebaseFirestore.instance
@@ -44,6 +44,10 @@ Future<void> writeFoodScanResultsToFirestore(
       .add({
     'foodPicURL': picURL,
     'timestamp': Timestamp.now(),
-    'identifiedFoodIDs': ['Proteins', 'Carbohydrates'],
+    'identifiedFoodNutrients': [
+      {'name': 'Proteins', 'grams': nutrients[0]},
+      {'name': 'Fats', 'grams': nutrients[1]},
+      {'name': 'Carbohydrates', 'grams': nutrients[2]}
+    ],
   });
 }

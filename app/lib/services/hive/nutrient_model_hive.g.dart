@@ -18,7 +18,7 @@ class FoodNutrientHiveAdapter extends TypeAdapter<FoodNutrientHive> {
     };
     return FoodNutrientHive(
       name: fields[0] as String,
-      percentage: fields[1] as double,
+      grams: fields[1] as double,
     );
   }
 
@@ -29,7 +29,7 @@ class FoodNutrientHiveAdapter extends TypeAdapter<FoodNutrientHive> {
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.percentage);
+      ..write(obj.grams);
   }
 
   @override

@@ -1,0 +1,17 @@
+CODE_INGREDIENT,INGREDIENT_ENG,FOODEX2_INGR_DESCR,FOOD_AMOUNT_REPORTED,ENERGY_kcal,PROTEIN_g,CARBOH_g,FAT_g
+805002,"* banana,matooke,green & fresh,boiled *boiled*","Plantains - acuminata cultivars,  QUAL=Unripe / immature,  QUAL=Fresh,  PROCESS=Boiling",1.0,1.17136659436009,0.00867678958785249,0.31236442516269,0.00216919739696312
+830002,"* banana,ndiizi,ripe,raw *boiled*","Common banana - acuminata cultivars, PROCESS = Boiling, QUALITATIVE-INFO = Fresh, QUALITATIVE-INFO = Ripe / mature",1.0,1.04895104895105,0.00959692898272553,0.247600767754319,0.00233100233100233
+806130,"* bean,whole seed,kidney (all types),dried,boiled *boiled*","Kidney bean (fresh seeds),  STATE=Whole/unsplit form, including artificial forms,  PROCESS=Boiling",1.0,1.26773888363292,0.086472602739726,0.227882037533512,0.0051413881748072
+806122,"* bean,whole seed,kidney (all types),fresh,boiled *boiled*","Kidney bean (dry seeds),  STATE=Whole/unsplit form, including artificial forms,  PROCESS=Boiling",1.0,0.800438596491228,0.0559210526315789,0.143640350877193,0.00219298245614035
+814024,"* fish,perch (type 3),fresh,deep-fried *boiled*","Perch,  QUAL=Fresh,  PROCESS=Deep frying,  PROCESS=Boiling",1.0,1.17647058823529,0.245098039215686,0.0,0.00980392156862745
+814021,"* fish,perch (type 3),fresh,raw *boiled*","Perch,  QUAL=Fresh,  PROCESS=Raw, no heat treatment,  PROCESS=Boiling",1.0,0.898876404494382,0.194756554307116,0.0,0.00749063670411985
+814025,"* fish,perch (type 3),fresh,roasted *boiled*","Perch,  QUAL=Fresh,  PROCESS=Roasting,  PROCESS=Boiling",1.0,1.14583333333333,0.25,0.0,0.0104166666666667
+808186,"* kinyebwa paste/powder,fm raw seed *boiled*","Nut/seeds paste/emulsion/mass,  PROCESS=Boiling",1.0,3.37553410349739,0.231087094723458,0.598441073793186,0.00989148180159416
+801041,"* maize flour,fm white grain,refined,raw *boiled*","Maize flour, HOW=W/o husks, PROCESS=Boiling",1.0,3.6899410271505,0.0725212464589235,0.79149299264892,0.017894867928892
+830022,"* mango,green,fresh,raw *boiled*","Mangoes, PROCESS = Boiling, QUALITATIVE-INFO = Unripe / immature, QUALITATIVE-INFO = Fresh",1.0,0.546875,0.0,0.140625,0.0
+30001,"banana,bogoya,ripe & fresh,raw","Common banana - acuminata cultivars, QUALITATIVE-INFO = Fresh, QUALITATIVE-INFO = Ripe / mature",1.0,0.888030888030888,0.0108785941231698,0.228281853281853,0.00337837837837838
+30091,"jackfruit,ripe,fresh,raw","Jackfruits, INFO=Ripe / mature",1.0,0.939836240655037,0.0147128618889416,0.240081383519837,0.00284900284900285
+1206,"rice,brown grain (unpolished),fried","Rice grain, brown,  PROCESS=Frying",1.0,1.75955880229839,0.0359388444547108,0.370943319954956,0.0129142725146537
+1203,"rice,white grain (polished),fried","Rice grain, polished,  PROCESS=Frying",1.0,1.75991718426501,0.0319952606635071,0.387985573979702,0.00300440076101558
+3001,"sweet potato,white flesh,boiled","Sweet potatoes, PROCESS = Boiling, QUALITATIVE-INFO = White",1.0,1.07578980959472,0.0194107009892565,0.251999787256675,0.000673332624188916
+4006,"sweet potato,yellow,flesh,fresh,boiled","Sweet potatoes, PROCESS = Boiling, QUALITATIVE-INFO = Yellow",1.0,1.13888034450938,0.0207715133531157,0.266487213997308,0.000615195324515534

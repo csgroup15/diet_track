@@ -6,24 +6,24 @@ class FoodNutrientHive {
   @HiveField(0)
   String name;
   @HiveField(1)
-  double percentage;
+  double grams;
 
   FoodNutrientHive({
     required this.name,
-    required this.percentage,
+    required this.grams,
   });
 
   factory FoodNutrientHive.fromJson(Map<String, dynamic> json) {
     return FoodNutrientHive(
       name: json['name'],
-      percentage: json['percentage'].toDouble(),
+      grams: json['grams'],
     );
   }
 
   factory FoodNutrientHive.fromMap(Map<String, dynamic> map) {
     return FoodNutrientHive(
       name: map['name'],
-      percentage: map['percentage'].toDouble(),
+      grams: map['grams'],
     );
   }
 }
