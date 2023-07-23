@@ -5,6 +5,7 @@ import 'nutrient_model.dart';
 class ResultModel {
   String resultID, userID, foodPicURL;
   Timestamp timestamp;
+  List<String>? foods;
   final List<FoodNutrient>? identifiedFoodNutrients;
 
   ResultModel({
@@ -12,6 +13,7 @@ class ResultModel {
     required this.userID,
     required this.foodPicURL,
     required this.timestamp,
+    this.foods,
     this.identifiedFoodNutrients,
   });
 }

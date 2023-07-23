@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 Future<Map<String, dynamic>> sendImageForSegmentation(String imagePath) async {
-  var apiUrl = 'https://f71b-197-239-7-224.ngrok-free.app';
+  var apiUrl = 'https://17d4-102-85-141-103.ngrok-free.app';
 
   try {
     var request = http.MultipartRequest('POST', Uri.parse(apiUrl));

@@ -1,13 +1,16 @@
 import 'dart:io';
 
+import 'package:diet_track/screens/home/food_names.dart';
 import 'package:diet_track/services/hive/nutrient_model_hive.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mlkit_commons/src/input_image.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../config/constants.dart';
-import '../../services/api/model_service.dart';
+import '../../services/ml/labelling.dart';
+import '../../services/ml/segmentation.dart';
 import '../../services/firebase/write_firebase.dart';
 import '../../services/hive/read_hive.dart';
 import '../../services/hive/result_model_hive.dart';
@@ -16,6 +19,7 @@ import '../../utils/image.dart';
 import 'package:get/get.dart';
 
 import '../../utils/theme.dart';
+import '../results/result_detail.dart';
 import 'nutrient_calculation.dart';
 
 final currentUserID = FirebaseAuth.instance.currentUser!.uid;
@@ -51,11 +55,10 @@ class _HomeScreenState extends State<HomeScreen> {
       if (kDebugMode) {
         print('Segmentation Results: $result');
       }
-      // setState(() {
-      //   _segmentationResult = result;
-      // });
       List<dynamic> nutrients = calculateNutrients(result);
-      await writeFoodScanResultsToFirestore(currentUserID, photo, nutrients);
+      List<String> foods = getFoodNames(result);
+      await writeFoodScanResultsToFirestore(
+          currentUserID, photo, foods, nutrients);
       await saveFoodScanResultsToHive(currentUserID);
     } catch (e) {
       // Handle errors
@@ -144,80 +147,101 @@ class _HomeScreenState extends State<HomeScreen> {
                                         latestResult
                                             ?.identifiedFoodNutrients; // get the latest result from the box
                                     return latestResult != null
-                                        ? Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Flexible(
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  child: SizedBox(
-                                                    width: 350,
-                                                    height: 200,
-                                                    child: Image.file(
-                                                      File(latestResult
-                                                          .foodPicURL),
-                                                      fit: BoxFit.cover,
+                                        ? GestureDetector(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Flexible(
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    child: SizedBox(
+                                                      width: 350,
+                                                      height: 200,
+                                                      child: Image.file(
+                                                        File(latestResult
+                                                            .foodPicURL),
+                                                        fit: BoxFit.cover,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(16),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Center(
-                                                      child: Text(
-                                                        'Nutrients',
-                                                        style: TextStyle(
-                                                          color: getCurrentTheme(
-                                                                      context) ==
-                                                                  'dark'
-                                                              ? Colors.white
-                                                              : Colors.black,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 21,
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(16),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Center(
+                                                        child: Text(
+                                                          'Nutrients',
+                                                          style: TextStyle(
+                                                            color: getCurrentTheme(
+                                                                        context) ==
+                                                                    'dark'
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 21,
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 15,
-                                                    ),
-                                                    Center(
+                                                      const SizedBox(
+                                                        height: 15,
+                                                      ),
+                                                      Center(
                                                         child: ListView.builder(
-                                                      shrinkWrap: true,
-                                                      itemCount:
-                                                          nutrients!.length,
-                                                      itemBuilder:
-                                                          (BuildContext context,
-                                                              int index) {
-                                                        FoodNutrientHive
-                                                            nutrient =
-                                                            nutrients[index];
-                                                        return Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .fromLTRB(
-                                                                  0, 5, 0, 0),
-                                                          child: Text(
-                                                            '${nutrient.name}: ${nutrient.grams.toStringAsFixed(1)} grams',
-                                                            style:
-                                                                const TextStyle(
-                                                              fontSize: 17,
-                                                            ),
-                                                          ),
-                                                        );
-                                                      },
-                                                    )),
-                                                  ],
+                                                          shrinkWrap: true,
+                                                          itemCount:
+                                                              nutrients!.length,
+                                                          itemBuilder:
+                                                              (BuildContext
+                                                                      context,
+                                                                  int index) {
+                                                            FoodNutrientHive
+                                                                nutrient =
+                                                                nutrients[
+                                                                    index];
+                                                            return Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .fromLTRB(
+                                                                      0,
+                                                                      5,
+                                                                      0,
+                                                                      0),
+                                                              child: Text(
+                                                                '${nutrient.name}: ${nutrient.grams.toStringAsFixed(1)} grams',
+                                                                style:
+                                                                    const TextStyle(
+                                                                  fontSize: 17,
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ResultDetailScreen(
+                                                    resultHive: latestResult,
+                                                  ),
+                                                ),
+                                              );
+                                            },
                                           )
                                         : const Center(
                                             child: Text(
@@ -301,20 +325,22 @@ class _HomeScreenState extends State<HomeScreen> {
                               onTap: () async {
                                 Get.back();
                                 File? photo = await pickImageFromPhoneGallery();
+
                                 if (!mounted) return;
                                 if (photo != null) {
-                                  await _segmentImage(photo);
-
-                                  // if (!mounted) return;
-                                  // showUploadDialog(context);
-                                  // List<double> nutrients =
-                                  //     calculateNutrients(_segmentationResult!);
-                                  // await writeFoodScanResultsToFirestore(
-                                  //     currentUserID, photo, nutrients);
-                                  // await saveFoodScanResultsToHive(
-                                  //     currentUserID);
-                                  // if (!mounted) return;
-                                  // hideUploadDialog(context);
+                                  bool isit = await imageContainsFood(
+                                      InputImage.fromFile(photo));
+                                  if (isit) {
+                                    await _segmentImage(photo);
+                                  } else {
+                                    if (!mounted) return;
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                      content:
+                                          Text('No food detected in the image'),
+                                      duration: Duration(seconds: 5),
+                                    ));
+                                  }
                                 }
                               },
                             ),
@@ -326,15 +352,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                 File? photo = await pickImageFromPhoneCamera();
                                 if (!mounted) return;
                                 if (photo != null) {
-                                  await _segmentImage(photo);
-                                  // getFoodPicSegments(
-                                  //     File(readClassModelPath()), photo!);
-                                  // showUploadDialog(context);
-                                  // await writeFoodScanResultsToFirestore(
-                                  //     currentUserID, photo!);
-                                  // await saveFoodScanResultsToHive(currentUserID);
-                                  // if (!mounted) return;
-                                  // hideUploadDialog(context);
+                                  bool isit = await imageContainsFood(
+                                      InputImage.fromFile(photo));
+                                  if (isit) {
+                                    await _segmentImage(photo);
+                                  } else {
+                                    if (!mounted) return;
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                      content:
+                                          Text('No food detected in the image'),
+                                      duration: Duration(seconds: 5),
+                                    ));
+                                  }
                                 }
                               },
                             ),

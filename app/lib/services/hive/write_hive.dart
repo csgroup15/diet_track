@@ -75,6 +75,7 @@ Future<void> saveFoodScanResultsToHive(String currUserID) async {
         timestamp: formatTimestampToDatetime(result.timestamp),
         userID: result.userID,
         foodPicURL: foodPicPathHive,
+        foods: result.foods,
         identifiedFoodNutrients: identifiedFoodNutrientsHive,
       );
 

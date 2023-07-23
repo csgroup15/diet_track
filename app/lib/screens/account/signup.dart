@@ -223,18 +223,21 @@ class SignUpState extends State<SignUp> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter the password';
-                        } else if (value.length <= 8) {
-                          return 'Password must be greater than 8 characters';
-                        } else {
-                          bool result =
-                              UserInfoValidator.validatePassword(value);
-                          if (result) {
-                            // create account event
-                            return null;
-                          } else {
-                            return ' Password should contain a capital letter, \nsmall letter, number & a special character';
-                          }
                         }
+                        return null;
+
+                        // else if (value.length <= 8) {
+                        //   return 'Password must be greater than 8 characters';
+                        // } else {
+                        //   bool result =
+                        //       UserInfoValidator.validatePassword(value);
+                        //   if (result) {
+                        //     // create account event
+                        //     return null;
+                        //   } else {
+                        //     return ' Password should contain a capital letter, \nsmall letter, number & a special character';
+                        //   }
+                        // }
                       },
                       obscureText: _isHidden,
                       decoration: InputDecoration(
@@ -335,11 +338,9 @@ class SignUpState extends State<SignUp> {
                                   otherNames: _otherNamesController.text.trim(),
                                   email: _emailController.text.trim(),
                                 );
-
                                 newUser.addUserData(newUser);
                                 await saveUserModelToHive(currUserID);
                                 await saveFoodScanResultsToHive(currUserID);
-
                                 if (!mounted) return;
                                 Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(

@@ -14,6 +14,8 @@ class ResultModelHive {
   @HiveField(3)
   String foodPicURL;
   @HiveField(4)
+  List<String>? foods;
+  @HiveField(5)
   final List<FoodNutrientHive>? identifiedFoodNutrients;
 
   ResultModelHive({
@@ -21,6 +23,7 @@ class ResultModelHive {
     required this.timestamp,
     required this.userID,
     required this.foodPicURL,
+    this.foods,
     this.identifiedFoodNutrients,
   });
 }

@@ -30,6 +30,7 @@ dependencies:
   #dart run flutter_launcher_icons
   flutter_launcher_icons: ^0.13.1
   http: ^1.1.0
+  google_mlkit_image_labeling: ^0.8.0
 
 dev_dependencies:
   #dart run build_runner build

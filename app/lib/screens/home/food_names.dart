@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-List<dynamic> calculateNutrients(Map<String, dynamic> classPercentages) {
+List<String> getFoodNames(Map<String, dynamic> classPercentages) {
   String jsonData = '''
   [
     {"class_label":"805002","food_name":"Matooke","energy_kcal":"1.17136659436009","protein_g":"0.00867678958785249","carbohydrates_g":"0.31236442516269","fats_g":"0.00216919739696312"},
@@ -23,35 +23,16 @@ List<dynamic> calculateNutrients(Map<String, dynamic> classPercentages) {
   ''';
 
   List<dynamic> foodData = json.decode(jsonData);
-
-  double totalProteins = 0;
-  double totalFats = 0;
-  double totalCarbohydrates = 0;
-
-  double totalFoodAmount = 100;
+  List<String> foodNames = [];
 
   for (var food in foodData) {
     String classLabel = food["class_label"];
     double? percentage = classPercentages[classLabel];
 
     if (percentage != null) {
-      double proteinsPerGram = double.parse(food["protein_g"]);
-      double fatsPerGram = double.parse(food["fats_g"]);
-      double carbohydratesPerGram = double.parse(food["carbohydrates_g"]);
-
-      double classAmount = totalFoodAmount * (percentage / 100);
-
-      totalProteins += proteinsPerGram * classAmount;
-      totalFats += fatsPerGram * classAmount;
-      totalCarbohydrates += carbohydratesPerGram * classAmount;
+      String foodName = food["food_name"];
+      foodNames.add(foodName);
     }
   }
-
-  List<double> nutrientGrams = [
-    totalProteins,
-    totalFats,
-    totalCarbohydrates,
-  ];
-
-  return nutrientGrams;
+  return foodNames;
 }

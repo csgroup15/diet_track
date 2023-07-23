@@ -35,6 +35,7 @@ Future<List<ResultModel>> getUserFoodScanResultsFromFirebase(
     final resultID = resultDoc.id;
     final foodPicURL = data['foodPicURL'] as String;
     final timestamp = data['timestamp'] as Timestamp;
+    final foods = data['foods'].cast<String>();
     final identifiedFoodNutrientsData = data['identifiedFoodNutrients'];
     final identifiedFoodNutrients =
         (identifiedFoodNutrientsData as List<dynamic>)
@@ -44,6 +45,7 @@ Future<List<ResultModel>> getUserFoodScanResultsFromFirebase(
       resultID: resultID,
       foodPicURL: foodPicURL,
       timestamp: timestamp,
+      foods: foods,
       identifiedFoodNutrients: identifiedFoodNutrients,
       userID: currentUserID,
     );

@@ -4,7 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../config/constants.dart';
+import '../../services/hive/nutrient_model_hive.dart';
 import '../../services/hive/result_model_hive.dart';
+import '../../utils/formatter.dart';
 
 final userID = FirebaseAuth.instance.currentUser!.uid;
 
@@ -24,6 +26,9 @@ class _ResultDetailScreenState extends State<ResultDetailScreen> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+    final foods = widget.resultHive.foods;
+    final List<FoodNutrientHive>? nutrients =
+        widget.resultHive.identifiedFoodNutrients;
 
     return Scaffold(
       body: Stack(
@@ -60,52 +65,89 @@ class _ResultDetailScreenState extends State<ResultDetailScreen> {
             ),
           ),
           Positioned(
-              bottom: screenHeight * 0.13,
-              left: screenWidth * 0.052,
-              right: screenWidth * 0.052,
-              child: Container(
-                height: screenHeight * 0.413,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: kWhiteSmokeColor),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: screenHeight * 0.0308,
+            bottom: screenHeight * 0.13,
+            left: screenWidth * 0.052,
+            right: screenWidth * 0.052,
+            child: Container(
+              height: screenHeight * 0.513,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: kWhiteSmokeColor),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: screenHeight * 0.0308,
+                    ),
+                    Center(
+                        child: Text(
+                      'Check Time: ${formatResultTimeFromDateTimeToString(widget.resultHive.timestamp)}',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 19,
                       ),
-                      Center(
-                          child: Text(
-                        widget.resultHive.resultID,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 21,
+                    )),
+                    SizedBox(height: screenHeight * 0.0223),
+                    const Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'Foods',
+                        style: TextStyle(color: Colors.black, fontSize: 18),
+                      ),
+                    ),
+                    SingleChildScrollView(
+                      child: SizedBox(
+                        height: 100,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: widget.resultHive.foods!.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final food = foods![index];
+                            return Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+                              child: Text(
+                                food,
+                                style: const TextStyle(
+                                    fontSize: 17, color: Colors.black),
+                              ),
+                            );
+                          },
                         ),
-                      )),
-                      SizedBox(height: screenHeight * 0.0123),
-                      Center(
-                          child: Text(
-                        widget.resultHive.resultID,
-                        style: const TextStyle(
-                            color: Color.fromARGB(255, 117, 112, 112),
-                            fontSize: 17),
-                      )),
-                      SizedBox(height: screenHeight * 0.0423),
-                      Row(
-                        children: [
-                          const Icon(Icons.food_bank),
-                          const SizedBox(width: 10),
-                          Text(widget.resultHive.resultID)
-                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: screenHeight * 0.0423),
+                    const Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'Nutrients',
+                        style: TextStyle(color: Colors.black, fontSize: 18),
+                      ),
+                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount:
+                          widget.resultHive.identifiedFoodNutrients!.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        FoodNutrientHive nutrient = nutrients![index];
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+                          child: Text(
+                            '${nutrient.name}: ${nutrient.grams.toStringAsFixed(1)} grams',
+                            style: const TextStyle(
+                                fontSize: 17, color: Colors.black),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
-              )),
+              ),
+            ),
+          ),
         ],
       ),
     );
