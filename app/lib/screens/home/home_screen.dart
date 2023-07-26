@@ -5,6 +5,7 @@ import 'package:diet_track/services/hive/nutrient_model_hive.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+// ignore: implementation_imports
 import 'package:google_mlkit_commons/src/input_image.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -50,28 +51,39 @@ class _HomeScreenState extends State<HomeScreen> {
       _isLoading = true;
     });
 
+    String snackBarMessage;
     try {
       final result = await sendImageForSegmentation(photo.path);
       if (kDebugMode) {
         print('Segmentation Results: $result');
       }
       List<dynamic> nutrients = calculateNutrients(result);
+
       List<String> foods = getFoodNames(result);
       await writeFoodScanResultsToFirestore(
           currentUserID, photo, foods, nutrients);
       await saveFoodScanResultsToHive(currentUserID);
+
+      // Processing completed successfully, show this message
+      snackBarMessage = 'Results back. Check your nutrients above';
     } catch (e) {
       // Handle errors
+      // If an error occurs, this message will be shown
+      snackBarMessage = 'Sorry. An error has occurred';
     } finally {
       setState(() {
         _isLoading = false;
       });
     }
+
+    // Show the appropriate SnackBar message based on success or failure
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      content: Text('Results back. Check your nutrients above'),
-      duration: Duration(seconds: 5),
-    ));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(snackBarMessage),
+        duration: const Duration(seconds: 5),
+      ),
+    );
   }
 
   @override

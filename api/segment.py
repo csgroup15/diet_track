@@ -16,10 +16,10 @@ COLORMAP = None
 model = None
 
 # model path using the relative path
-current_model_path = '/home/ron/docs/dt_web/model/segmentation_model.h5'
+current_model_path = '/home/ron/xcodes/dt_docker/segmentation_model.h5'
 
 # food color map path using the relative path
-current_food_map_path = '/home/ron/docs/dt_web/model/foods_colormap.mat'
+current_food_map_path = '/home/ron/xcodes/dt_docker/foods_colormap.mat'
 
 def grayscale_to_rgb(mask, classes, colormap):
     h, w, _ = mask.shape
