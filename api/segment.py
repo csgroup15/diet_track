@@ -1,11 +1,13 @@
 from flask import Flask, request, jsonify
 import tensorflow as tf
 import numpy as np
+import matplotlib.pyplot as plt
 import scipy.io
 import cv2
 import json
 
 app = Flask(__name__)
+app.debug = True
 
 # Global variables
 IMG_H = 320
@@ -32,16 +34,43 @@ def grayscale_to_rgb(mask, classes, colormap):
     output = np.reshape(output, (h, w, 3))
     return output
 
-def save_results(image, pred):
+import matplotlib.pyplot as plt
+
+import matplotlib.pyplot as plt
+
+def save_results(image, pred, save_image_path):
     h, w, _ = image.shape
+    line = np.ones((h, 10, 3)) * 255
 
     pred = np.expand_dims(pred, axis=-1)
-    pred = grayscale_to_rgb(pred, CLASSES, COLORMAP)
-    resized_mask = cv2.resize(pred, (w,h))
-    # visualize(image,resized_mask)
+    pred_rgb = grayscale_to_rgb(pred, CLASSES, COLORMAP)
+    resized_mask = cv2.resize(pred_rgb, (w,h))
 
-    # cat_images = np.concatenate([image, line, mask, line, pred], axis=1)
-    # cv2.imwrite(save_image_path, cat_images)
+    cat_images = np.concatenate([image, line, resized_mask], axis=1)
+
+    # Save the concatenated image to the disk
+    if cv2.imwrite(save_image_path, cat_images):
+        print(f"Concatenated image saved successfully at: {save_image_path}")
+    else:
+        print("Error: Failed to save concatenated image.")
+
+    # # Plot and save the visualization
+    # plt.figure(figsize=(10, 5))
+    # plt.subplot(1, 2, 1)
+    # #plt.imshow(image)
+    # plt.title('Input Image')
+    # plt.subplot(1, 2, 2)
+    # #plt.imshow(resized_mask)
+    # plt.title('Predicted Mask')
+    # plt.colorbar()
+
+    # vis_image_path = save_image_path.replace('.jpg', '_visualization.jpg')
+    # if plt.savefig(vis_image_path):
+    #     print(f"Visualization image saved successfully at: {vis_image_path}")
+    # else:
+    #     print("Error: Failed to save visualization image.")
+
+    # plt.close()
 
 def getPercentages(mask, colormap, class_list):
     mask = np.expand_dims(mask, axis=-1)
@@ -107,7 +136,7 @@ def index():
         pred = np.argmax(pred, axis=-1)
         pred = pred.astype(np.float32)
 
-        save_results(image[0] * 255.0, pred)
+        save_results(image[0] * 255.0, pred, '/home/ron/xcodes/dt_docker/image_masks/image_1.jpg')
 
         class_percentages = getPercentages(pred, COLORMAP, CLASSES)
 

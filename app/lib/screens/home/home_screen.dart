@@ -67,8 +67,9 @@ class _HomeScreenState extends State<HomeScreen> {
       // Processing completed successfully, show this message
       snackBarMessage = 'Results back. Check your nutrients above';
     } catch (e) {
-      // Handle errors
-      // If an error occurs, this message will be shown
+      if (kDebugMode) {
+        print('Error from image segmentation: $e');
+      }
       snackBarMessage = 'Sorry. An error has occurred';
     } finally {
       setState(() {
