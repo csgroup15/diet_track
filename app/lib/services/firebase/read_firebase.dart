@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../models/food_model.dart';
 import '../../models/result_model.dart';
 import '../../models/user_model.dart';
 
@@ -34,8 +35,13 @@ Future<List<ResultModel>> getUserFoodScanResultsFromFirebase(
     final data = resultDoc.data();
     final resultID = resultDoc.id;
     final foodPicURL = data['foodPicURL'] as String;
+    final processedImage = data['processedImage'] as String;
     final timestamp = data['timestamp'] as Timestamp;
-    final foods = data['foods'].cast<String>();
+    final foods = data['foods'];
+
+    final identifiedFoods = (foods as List<dynamic>)
+        .map((foodData) => FoodModel.fromMap(foodData))
+        .toList();
     final identifiedFoodNutrientsData = data['identifiedFoodNutrients'];
     final identifiedFoodNutrients =
         (identifiedFoodNutrientsData as List<dynamic>)
@@ -45,7 +51,8 @@ Future<List<ResultModel>> getUserFoodScanResultsFromFirebase(
       resultID: resultID,
       foodPicURL: foodPicURL,
       timestamp: timestamp,
-      foods: foods,
+      processedImage: processedImage,
+      foods: identifiedFoods,
       identifiedFoodNutrients: identifiedFoodNutrients,
       userID: currentUserID,
     );

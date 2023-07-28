@@ -1,6 +1,8 @@
 import 'dart:convert';
 
-List<String> getFoodNames(Map<String, dynamic> classPercentages) {
+import '../../models/food_model.dart';
+
+List<FoodModel> getFoodNamesWithConfidence(List<dynamic> segmentationResult) {
   String jsonData = '''
   [
     {"class_label":"805002","food_name":"Matooke","energy_kcal":"1.17136659436009","protein_g":"0.00867678958785249","carbohydrates_g":"0.31236442516269","fats_g":"0.00216919739696312"},
@@ -21,18 +23,31 @@ List<String> getFoodNames(Map<String, dynamic> classPercentages) {
     {"class_label":"4006","food_name":"Yellow sweet potato","energy_kcal":"1.13888034450938","protein_g":"0.0207715133531157","carbohydrates_g":"0.266487213997308","fats_g":"0.000615195324515534"}
   ]
   ''';
+  double? getConfidenceByLabel(
+      List<dynamic> segmentationResult, String classLabel) {
+    for (var segment in segmentationResult) {
+      if (segment.containsKey("label") &&
+          segment["label"].toString() == classLabel) {
+        return segment["confidence_score"];
+      }
+    }
+    return null;
+  }
 
   List<dynamic> foodData = json.decode(jsonData);
-  List<String> foodNames = [];
+  List<FoodModel> foodModels = [];
 
   for (var food in foodData) {
     String classLabel = food["class_label"];
-    double? percentage = classPercentages[classLabel];
+    double? confid = getConfidenceByLabel(segmentationResult, classLabel);
 
-    if (percentage != null) {
+    if (confid != null) {
       String foodName = food["food_name"];
-      foodNames.add(foodName);
+      double confidence = confid;
+
+      FoodModel foodModel = FoodModel(name: foodName, confidence: confidence);
+      foodModels.add(foodModel);
     }
   }
-  return foodNames;
+  return foodModels;
 }

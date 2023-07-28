@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import scipy.io
 import cv2
 import json
+import base64
 
 app = Flask(__name__)
 app.debug = True
@@ -54,24 +55,6 @@ def save_results(image, pred, save_image_path):
     else:
         print("Error: Failed to save concatenated image.")
 
-    # # Plot and save the visualization
-    # plt.figure(figsize=(10, 5))
-    # plt.subplot(1, 2, 1)
-    # #plt.imshow(image)
-    # plt.title('Input Image')
-    # plt.subplot(1, 2, 2)
-    # #plt.imshow(resized_mask)
-    # plt.title('Predicted Mask')
-    # plt.colorbar()
-
-    # vis_image_path = save_image_path.replace('.jpg', '_visualization.jpg')
-    # if plt.savefig(vis_image_path):
-    #     print(f"Visualization image saved successfully at: {vis_image_path}")
-    # else:
-    #     print("Error: Failed to save visualization image.")
-
-    # plt.close()
-
 def getPercentages(mask, colormap, class_list):
     mask = np.expand_dims(mask, axis=-1)
     mask = grayscale_to_rgb(mask, CLASSES, COLORMAP)
@@ -96,6 +79,34 @@ def getPercentages(mask, colormap, class_list):
 
     return class_percentages
 
+def image_to_base64(image):
+    _, buffer = cv2.imencode('.jpg', image)
+    return base64.b64encode(buffer).decode('utf-8')
+
+def getConfidenceScores(mask, colormap, class_percentages):
+    confidence_scores = []
+    for label, percentage in zip(CLASSES, class_percentages):
+        if label != 'background' and percentage >= 0.3:
+            class_mask = (mask == CLASSES.index(label))
+            class_pixels = mask[class_mask]
+
+            if len(class_pixels) == 0:
+                confidence = 0.0
+            else:
+                confidence = np.mean(class_pixels)
+
+            confidence_scores.append({
+                'label': label,
+                'percentage': float(percentage),
+                'confidence_score': float(confidence)
+            })
+
+            # Add the processed image to the confidence_scores list
+            processed_image_base64 = image_to_base64((mask * 255.0).astype(np.uint8))
+            confidence_scores.append({'processed_image': processed_image_base64})
+
+    return confidence_scores
+
 def load_model():
     global CLASSES, COLORMAP, model
 
@@ -111,6 +122,7 @@ def load_model():
     classes = ['background','1203', '1206', '3001', '30001', '30091', '801041', '802002', '805002', '806122', '806130', '808186', '814021', '814024', '814025', '830002', '4006']
     COLORMAP = colormap
     CLASSES = classes
+
 
 @app.route('/', methods=['POST'])
 def index():
@@ -139,17 +151,15 @@ def index():
         save_results(image[0] * 255.0, pred, '/home/ron/xcodes/dt_docker/image_masks/image_1.jpg')
 
         class_percentages = getPercentages(pred, COLORMAP, CLASSES)
+        confidence_scores = getConfidenceScores(pred, CLASSES, class_percentages)
 
-        # Filter out background class and classes with percentages less than 0.3
-        filtered_percentages = {}
-        for label, percentage in zip(CLASSES, class_percentages):
-            if label != 'background' and percentage >= 0.3:
-                filtered_percentages[label] = percentage
-
+          # Create the JSON response with labels, percentages, and confidence scores
         response = {
-            'image_path': 'path/to/saved/image.jpg',
-            'class_percentages': filtered_percentages
+            'segmentation_result': confidence_scores
         }
+
+        # Print the JSON response just before sending
+        print('JSON Response:', json.dumps(response, indent=4))
 
         return jsonify(response), 200
 

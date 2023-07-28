@@ -1,6 +1,7 @@
 import 'dart:io';
 
-import 'package:diet_track/screens/home/food_names.dart';
+import 'package:diet_track/models/food_model.dart';
+import 'package:diet_track/screens/home/foods.dart';
 import 'package:diet_track/services/hive/nutrient_model_hive.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -22,6 +23,7 @@ import 'package:get/get.dart';
 import '../../utils/theme.dart';
 import '../results/result_detail.dart';
 import 'nutrient_calculation.dart';
+import 'processed_image.dart';
 
 final currentUserID = FirebaseAuth.instance.currentUser!.uid;
 
@@ -54,14 +56,17 @@ class _HomeScreenState extends State<HomeScreen> {
     String snackBarMessage;
     try {
       final result = await sendImageForSegmentation(photo.path);
-      if (kDebugMode) {
-        print('Segmentation Results: $result');
-      }
+      // if (kDebugMode) {
+      //   print('Segmentation Results: $result');
+      // }
       List<dynamic> nutrients = calculateNutrients(result);
 
-      List<String> foods = getFoodNames(result);
+      List<FoodModel?> foods = getFoodNamesWithConfidence(result);
+
+      String? processedImage = getProcessedImageString(result);
+
       await writeFoodScanResultsToFirestore(
-          currentUserID, photo, foods, nutrients);
+          currentUserID, photo, foods, nutrients, processedImage!);
       await saveFoodScanResultsToHive(currentUserID);
 
       // Processing completed successfully, show this message

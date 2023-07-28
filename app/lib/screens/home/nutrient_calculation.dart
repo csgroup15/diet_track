@@ -1,10 +1,9 @@
 import 'dart:convert';
 
-List<dynamic> calculateNutrients(Map<String, dynamic> classPercentages) {
+List<dynamic> calculateNutrients(List<dynamic> segmentationResult) {
   String jsonData = '''
   [
     {"class_label":"805002","food_name":"Matooke","energy_kcal":"1.17136659436009","protein_g":"0.00867678958785249","carbohydrates_g":"0.31236442516269","fats_g":"0.00216919739696312"},
-    {"class_label":"830088","food_name":"matooke","energy_kcal":"1.04895104895105","protein_g":"0.00959692898272553","carbohydrates_g":"0.247600767754319","fats_g":"0.00233100233100233"},
     {"class_label":"806130","food_name":"Dry beans","energy_kcal":"1.26773888363292","protein_g":"0.086472602739726","carbohydrates_g":"0.227882037533512","fats_g":"0.0051413881748072"},
     {"class_label":"806122","food_name":"Fresh beans","energy_kcal":"0.800438596491228","protein_g":"0.0559210526315789","carbohydrates_g":"0.143640350877193","fats_g":"0.00219298245614035"},
     {"class_label":"814024","food_name":"Deep fried fish","energy_kcal":"1.17647058823529","protein_g":"0.245098039215686","carbohydrates_g":"0","fats_g":"0.00980392156862745"},
@@ -22,6 +21,17 @@ List<dynamic> calculateNutrients(Map<String, dynamic> classPercentages) {
   ]
   ''';
 
+  double? getPercentageByLabel(
+      List<dynamic> segmentationResult, String classLabel) {
+    for (var segment in segmentationResult) {
+      if (segment.containsKey("label") &&
+          segment["label"].toString() == classLabel) {
+        return segment["percentage"];
+      }
+    }
+    return null;
+  }
+
   List<dynamic> foodData = json.decode(jsonData);
 
   double totalProteins = 0;
@@ -32,7 +42,7 @@ List<dynamic> calculateNutrients(Map<String, dynamic> classPercentages) {
 
   for (var food in foodData) {
     String classLabel = food["class_label"];
-    double? percentage = classPercentages[classLabel];
+    double? percentage = getPercentageByLabel(segmentationResult, classLabel);
 
     if (percentage != null) {
       double proteinsPerGram = double.parse(food["protein_g"]);

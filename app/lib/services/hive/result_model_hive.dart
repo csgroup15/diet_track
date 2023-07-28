@@ -1,5 +1,5 @@
+import 'package:diet_track/services/hive/food_model_hive.dart';
 import 'package:hive/hive.dart';
-
 import 'nutrient_model_hive.dart';
 part 'result_model_hive.g.dart';
 
@@ -14,8 +14,10 @@ class ResultModelHive {
   @HiveField(3)
   String foodPicURL;
   @HiveField(4)
-  List<String>? foods;
+  String? processedImage;
   @HiveField(5)
+  List<FoodModelHive>? foods;
+  @HiveField(6)
   final List<FoodNutrientHive>? identifiedFoodNutrients;
 
   ResultModelHive({
@@ -23,6 +25,7 @@ class ResultModelHive {
     required this.timestamp,
     required this.userID,
     required this.foodPicURL,
+    required this.processedImage,
     this.foods,
     this.identifiedFoodNutrients,
   });

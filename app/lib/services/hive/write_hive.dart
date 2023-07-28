@@ -4,9 +4,11 @@ import 'package:diet_track/models/nutrient_model.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../config/constants.dart';
+import '../../models/food_model.dart';
 import '../../models/user_model.dart';
 import '../../utils/formatter.dart';
 import '../firebase/read_firebase.dart';
+import 'food_model_hive.dart';
 import 'nutrient_model_hive.dart';
 import 'result_model_hive.dart';
 import 'user_model_hive.dart';
@@ -61,6 +63,14 @@ Future<void> saveFoodScanResultsToHive(String currUserID) async {
       String? foodPicPathHive =
           await storeFoodPicPathToHive(result.foodPicURL, result.resultID);
 
+      // Convert FoodModel list to FoodModelHive list
+      final foodsHive = (result.foods as List<FoodModel>)
+          .map((FoodModel food) => FoodModelHive(
+                name: food.name,
+                confidence: food.confidence,
+              ))
+          .toList();
+
       // Convert FoodNutrient list to FoodNutrientHive list
       final identifiedFoodNutrientsHive =
           (result.identifiedFoodNutrients as List<FoodNutrient>)
@@ -75,7 +85,8 @@ Future<void> saveFoodScanResultsToHive(String currUserID) async {
         timestamp: formatTimestampToDatetime(result.timestamp),
         userID: result.userID,
         foodPicURL: foodPicPathHive,
-        foods: result.foods,
+        processedImage: result.processedImage,
+        foods: foodsHive,
         identifiedFoodNutrients: identifiedFoodNutrientsHive,
       );
 

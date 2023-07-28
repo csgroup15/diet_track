@@ -7,6 +7,7 @@ import '../../config/constants.dart';
 import '../../services/hive/nutrient_model_hive.dart';
 import '../../services/hive/result_model_hive.dart';
 import '../../utils/formatter.dart';
+import 'pm_screen.dart';
 
 final userID = FirebaseAuth.instance.currentUser!.uid;
 
@@ -110,7 +111,7 @@ class _ResultDetailScreenState extends State<ResultDetailScreen> {
                             return Padding(
                               padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                               child: Text(
-                                food,
+                                food.name,
                                 style: const TextStyle(
                                     fontSize: 17, color: Colors.black),
                               ),
@@ -149,6 +150,32 @@ class _ResultDetailScreenState extends State<ResultDetailScreen> {
             ),
           ),
         ],
+      ),
+      // Centered rectangular button in green color
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+      floatingActionButton: ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => PMScreen(
+                      resultHive: widget.resultHive,
+                    )),
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          foregroundColor: Colors.white,
+          backgroundColor: kPrimaryColor, // Set the text color to white.
+          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        child: const Text(
+          'View Metrics',
+          style: TextStyle(fontSize: 16),
+        ),
       ),
     );
   }

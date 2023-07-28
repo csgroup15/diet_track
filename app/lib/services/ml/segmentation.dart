@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-Future<Map<String, dynamic>> sendImageForSegmentation(String imagePath) async {
-  var apiUrl = 'https://be68-102-85-200-15.ngrok-free.app';
+Future<List<dynamic>> sendImageForSegmentation(String imagePath) async {
+  var apiUrl = 'https://68e4-197-239-9-227.ngrok-free.app';
 
   try {
     var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
@@ -14,8 +14,8 @@ Future<Map<String, dynamic>> sendImageForSegmentation(String imagePath) async {
 
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(responseString);
-      var classPercentages = jsonResponse['class_percentages'];
-      return classPercentages;
+      var segResult = jsonResponse['segmentation_result'];
+      return segResult;
     } else {
       throw Exception('Failed with status: ${response.statusCode}');
     }

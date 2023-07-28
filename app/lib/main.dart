@@ -11,6 +11,7 @@ import 'screens/data_load_screen.dart';
 import 'screens/landing_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'services/firebase/auth_service.dart';
+import 'services/hive/food_model_hive.dart';
 import 'services/hive/nutrient_model_hive.dart';
 import 'services/hive/result_model_hive.dart';
 import 'services/hive/user_model_hive.dart';
@@ -18,6 +19,7 @@ import 'services/hive/write_hive.dart';
 
 final currUserID = FirebaseAuth.instance.currentUser!.uid;
 
+//TODO Concatenate images sent from api and come in color
 Future<void> main() async {
   await runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +29,7 @@ Future<void> main() async {
 
     await Hive.initFlutter();
     Hive.registerAdapter(UserModelHiveAdapter());
+    Hive.registerAdapter(FoodModelHiveAdapter());
     Hive.registerAdapter(FoodNutrientHiveAdapter());
     await Hive.openBox('user_info');
     Hive.registerAdapter(ResultModelHiveAdapter());
@@ -49,16 +52,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final MaterialColor mPrimarySwatch = createMaterialColor(kPrimaryColor);
+
     return AdaptiveTheme(
       light: ThemeData(
         fontFamily: 'SF-Pro-Rounded',
         brightness: Brightness.light,
-        primarySwatch: Colors.green,
+        primarySwatch: mPrimarySwatch,
+        primaryColor: kPrimaryColor,
       ),
       dark: ThemeData(
         fontFamily: 'SF-Pro-Rounded',
         brightness: Brightness.dark,
-        primarySwatch: Colors.green,
+        primaryColor: kPrimaryColor,
+        primarySwatch: mPrimarySwatch,
       ),
       initial: AdaptiveThemeMode.system,
       builder: (theme, darkTheme) => GetMaterialApp(

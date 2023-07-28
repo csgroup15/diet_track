@@ -21,15 +21,16 @@ class ResultModelHiveAdapter extends TypeAdapter<ResultModelHive> {
       timestamp: fields[1] as DateTime,
       userID: fields[2] as String,
       foodPicURL: fields[3] as String,
-      foods: (fields[4] as List?)?.cast<String>(),
-      identifiedFoodNutrients: (fields[5] as List?)?.cast<FoodNutrientHive>(),
+      processedImage: fields[4] as String?,
+      foods: (fields[5] as List?)?.cast<FoodModelHive>(),
+      identifiedFoodNutrients: (fields[6] as List?)?.cast<FoodNutrientHive>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, ResultModelHive obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.resultID)
       ..writeByte(1)
@@ -39,8 +40,10 @@ class ResultModelHiveAdapter extends TypeAdapter<ResultModelHive> {
       ..writeByte(3)
       ..write(obj.foodPicURL)
       ..writeByte(4)
-      ..write(obj.foods)
+      ..write(obj.processedImage)
       ..writeByte(5)
+      ..write(obj.foods)
+      ..writeByte(6)
       ..write(obj.identifiedFoodNutrients);
   }
 

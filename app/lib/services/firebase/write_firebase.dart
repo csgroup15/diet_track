@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../models/food_model.dart';
+
 final currentUserID = FirebaseAuth.instance.currentUser!.uid;
 
 Future<String?> uploadFoodPicToFirestorage(
@@ -34,8 +36,12 @@ Future<String?> uploadFoodPicToFirestorage(
 }
 
 Future<void> writeFoodScanResultsToFirestore(String userID, File foodPic,
-    List<String> foods, List<dynamic> nutrients) async {
+    List<dynamic> foods, List<dynamic> nutrients, String processedImage) async {
   String? picURL = await uploadFoodPicToFirestorage(userID, foodPic);
+
+  // Convert the List<FoodModel> to a List of Maps
+  List<Map<String, dynamic>> foodDataList =
+      foods.map((food) => foodModelToMap(food)).toList();
 
   await FirebaseFirestore.instance
       .collection('allResults')
@@ -45,7 +51,8 @@ Future<void> writeFoodScanResultsToFirestore(String userID, File foodPic,
     {
       'foodPicURL': picURL,
       'timestamp': Timestamp.now(),
-      'foods': foods,
+      'processedImage': processedImage,
+      'foods': foodDataList,
       'identifiedFoodNutrients': [
         {'name': 'Proteins', 'grams': nutrients[0]},
         {'name': 'Fats', 'grams': nutrients[1]},
